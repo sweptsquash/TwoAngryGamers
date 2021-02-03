@@ -1,0 +1,48 @@
+replicaCount: 1
+env: local
+logChannel: stack
+repositoryName: TwoAngryGamers
+image:
+  repository: twoangrygamers
+  pullPolicy: IfNotPresent
+  registry: senshudo
+projectPath: ""
+xdebugEnabled: false
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+podSecurityContext: {}
+
+securityContext: {}
+
+service:
+  type: ClusterIP
+  ports:
+    - name: web
+      port: 80
+
+ingress:
+  enabled: true
+  annotations:
+    ingress.kubernetes.io/enable-cors: "true"
+    kubernetes.io/ingress.class: traefik
+  hosts:
+    - name: twoangrygamers
+      host: twoangrygamers.test
+      paths: ["/"]
+    - name: twoangrygamerswww
+      host: www.twoangrygamers.test
+      paths: ["/"]
+    - name: twoangrygamerscontrol
+      host: control.twoangrygamers.test
+      paths: ["/"]
+
+resources: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
