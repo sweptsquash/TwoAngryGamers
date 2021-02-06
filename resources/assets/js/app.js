@@ -6,9 +6,44 @@ import Vue from 'vue'
 import VueMeta from 'vue-meta'
 import { BootstrapVue } from 'bootstrap-vue'
 import moment from 'moment'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import {
+    faDiscord,
+    faFacebookF,
+    faGithub,
+    faInstagram,
+    faTwitch,
+    faTwitter,
+    faYoutube,
+} from '@fortawesome/free-brands-svg-icons'
+import {
+    faComments,
+    faEye,
+    faInfo,
+    faShoppingBag,
+    faStar,
+} from '@fortawesome/free-solid-svg-icons'
 import store from '@/Store'
 require('@/bootstrap')
 import '../sass/app.scss'
+
+library.add(
+    faComments,
+    faDiscord,
+    faEye,
+    faFacebookF,
+    faGithub,
+    faInfo,
+    faInstagram,
+    faShoppingBag,
+    faStar,
+    faTwitch,
+    faTwitter,
+    faYoutube,
+)
+
+moment.locale(window.navigator.userLanguage || window.navigator.language);
 
 Vue.config.productionTip = false
 Vue.use(plugin)

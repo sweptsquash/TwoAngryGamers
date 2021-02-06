@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\ApiController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware(['api', 'guest', 'throttle:10,1'])->prefix('schedule')->name('schedule.')->group(function () {
+    Route::get('/', [ApiController::class, 'scheduleList'])->name('list');
+    Route::get('/next', [ApiController::class, 'scheduleNext'])->name('next');
 });

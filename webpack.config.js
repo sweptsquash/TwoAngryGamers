@@ -107,6 +107,8 @@ module.exports = {
                         loader: 'file-loader',
                         options: {
                             name: '[folder]/[name].[hash:8].[ext]',
+                            publicPath: '../',
+                            useRelativePaths: true,
                         },
                     },
                 ],

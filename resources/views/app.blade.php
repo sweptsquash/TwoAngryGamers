@@ -8,8 +8,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="fragment" content="!">
         <title>Two Angry Gamers</title>
-        <link rel="preload" href="{{ mix('/fonts/RB-L-700.woff2') }}" as="font" type="font/woff2" crossorigin>
-		<link rel="preload" href="{{ mix('/fonts/RB-LE-700.woff2') }}" as="font" type="font/woff2" crossorigin>
+        <link rel="preload" href="{{ mix('/fonts/Open-Sans-Latin-400.woff2') }}" as="font" type="font/woff2" crossorigin>
+		<link rel="preload" href="{{ mix('/fonts/Open-Sans-Latin-Ext-400.woff2') }}" as="font" type="font/woff2" crossorigin>
         <link href="{{ mix('/css/app.css') }}" rel="stylesheet" />
         <script src="{{ mix('/js/runtime.js') }}" defer type="text/javascript"></script>
         <script src="{{ mix('/js/vendors.js') }}" defer type="text/javascript"></script>
