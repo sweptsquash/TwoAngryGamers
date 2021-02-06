@@ -17,13 +17,7 @@ import {
     faTwitter,
     faYoutube,
 } from '@fortawesome/free-brands-svg-icons'
-import {
-    faComments,
-    faEye,
-    faInfo,
-    faShoppingBag,
-    faStar,
-} from '@fortawesome/free-solid-svg-icons'
+import { faComments, faEye, faInfo, faShoppingBag, faStar } from '@fortawesome/free-solid-svg-icons'
 import store from '@/Store'
 require('@/bootstrap')
 import '../sass/app.scss'
@@ -43,7 +37,7 @@ library.add(
     faYoutube,
 )
 
-moment.locale(window.navigator.userLanguage || window.navigator.language);
+moment.locale(window.navigator.userLanguage || window.navigator.language)
 
 Vue.config.productionTip = false
 Vue.use(plugin)
@@ -55,10 +49,10 @@ Vue.prototype.moment = moment
 
 Vue.mixin({
     methods: {
-        getFormatedDate(date, format = 'DD/MM/YYYY hh:mm:ss') {
+        getFormatedDate: (date, format = 'DD/MM/YYYY hh:mm:ss') => {
             return moment(date).format(format)
         },
-        formatNumber: function (num) {
+        formatNumber: (num) => {
             return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
         },
         route: (name, params, absolute) => route(name, params, absolute, Ziggy),
