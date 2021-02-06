@@ -56,7 +56,7 @@
                                 <div class="p-2 text-light">
                                     <font-awesome-icon :icon="['fas', 'eye']" />
                                     <span id="viewers">
-                                        {{ formatNumber(viewers) }}
+                                        {{ viewers | formatNumber }}
                                     </span>
                                 </div>
                             </b-col>
@@ -101,6 +101,7 @@ export default {
                 name: null,
                 description: null,
             },
+            viewers: 0,
             soonTM: false,
             isLive: false,
             isFollowing: false,
@@ -125,20 +126,19 @@ export default {
             this.isLive = false
             this.soonTM = false
 
-            /*instance
+            instance
                 .get('/streams/56964879')
-                .then((data) => {
-                    if (data.stream !== null) {
+                .then((response) => {
+                    if (response.data.stream !== null) {
                         this.isLive = true
+                        this.viewers = response.data.stream.viewers
                     } else {
                         this.fetchSchedule()
                     }
                 })
                 .catch(() => {
                     this.fetchSchedule()
-                })*/
-
-            this.fetchSchedule()
+                })
         },
         fetchSchedule: function () {
             window.axios
@@ -182,9 +182,6 @@ export default {
                     this.updateCountdown()
                 }, 1000)
             }
-        },
-        formatNumber: function (num) {
-            return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
         },
         handleFollowship: function () {
             // TODO: Add Twitch logic

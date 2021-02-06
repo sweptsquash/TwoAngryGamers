@@ -58,6 +58,9 @@ Vue.mixin({
         getFormatedDate(date, format = 'DD/MM/YYYY hh:mm:ss') {
             return moment(date).format(format)
         },
+        formatNumber: function (num) {
+            return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+        },
         route: (name, params, absolute) => route(name, params, absolute, Ziggy),
     },
 })
