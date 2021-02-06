@@ -55,7 +55,6 @@ module.exports = {
 	globals: {
         '_': 'readable',
         'axios': 'readable',
-        'FB': 'readable',
 		'moment': 'readable',
         'route': 'readable',
         'Twitch': 'readable',

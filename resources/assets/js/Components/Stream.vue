@@ -17,7 +17,7 @@
                         <div class="countdown-counter-container" id="countdownContainer">
                             <template v-for="unit in countdownUnits">
                                 <div
-                                    id="countdown-{{ unit.toLowerCase() }}"
+                                    :id="`countdown-${unit.toLowerCase()}`"
                                     :class="`timeslice timeslice-${unit.toLowerCase()}`"
                                     :key="`timeslice-${unit.toLowerCase()}`"
                                 >
@@ -125,8 +125,8 @@ export default {
             this.isLive = false
             this.soonTM = false
 
-            instance
-                .get('streams/56964879')
+            /*instance
+                .get('/streams/56964879')
                 .then((data) => {
                     if (data.stream !== null) {
                         this.isLive = true
@@ -134,9 +134,11 @@ export default {
                         this.fetchSchedule()
                     }
                 })
-                .fail(() => {
+                .catch(() => {
                     this.fetchSchedule()
-                })
+                })*/
+
+            this.fetchSchedule()
         },
         fetchSchedule: function () {
             window.axios
@@ -146,28 +148,28 @@ export default {
 
                     this.updateCountdown()
                 })
-                .fail((e) => {
+                .catch((e) => {
                     console.log(e)
                 })
         },
         updateCountdown: function () {
-            const countdownNow = moment.now()
-            const countdownStart = moment.unix(this.countdown.start)
-            const countdownEnd = moment.unix(this.countdown.end)
+            const countdownNow = this.moment.now()
+            const countdownStart = this.moment.unix(this.countdown.start)
+            const countdownEnd = this.moment.unix(this.countdown.end)
 
-            if (countdownNow.isAfter(countdownEnd)) {
+            if (this.moment(countdownNow).isAfter(countdownEnd)) {
                 this.streamCheck()
-            } else if (countdownNow.isAfter(countdownStart)) {
+            } else if (this.moment(countdownNow).isAfter(countdownStart)) {
                 this.soonTM = true
                 this.streamCheck()
             } else {
-                const duration = moment.duration(countdownStart - countdownEnd)
+                const counter = this.moment.duration(countdownStart - countdownNow)
 
                 for (let i = 0; i < this.countdownUnits.length; i++) {
                     const unit = this.countdownUnits[i]
                     const unitLower = unit.toLowerCase()
                     const timeslice = document.getElementById('countdown-' + unitLower)
-                    const value = moment.duration(duration)[unitLower]()
+                    const value = counter[unitLower]()
 
                     timeslice.childNodes[0].innerText = value
                     timeslice.childNodes[1].innerText =

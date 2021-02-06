@@ -16,7 +16,7 @@ html {
 
 #app {
     min-height: 100%;
-    padding-top: 56px;
+    padding-top: 120px;
     display: flex;
 }
 
@@ -30,8 +30,8 @@ h5,
 }
 
 .navbar {
-    background-color: rgb(219,94,26);
-    color: rgb(255,255,255);
+    background-color: $tag-orange;
+    color: rgb(255, 255, 255);
     font-weight: 600;
     border: none;
     border-radius: 0;
@@ -51,7 +51,7 @@ h5,
         .nav-item {
             .nav-link {
                 font-size: 18px;
-                color: rgb(255,255,255);
+                color: rgb(255, 255, 255);
                 text-transform: uppercase;
                 line-height: 1;
                 padding: 20px 25px;
@@ -60,7 +60,7 @@ h5,
                 &:hover,
                 &:focus,
                 &.active {
-                    color: rgb(102,53,26);
+                    color: rgb(102, 53, 26);
                 }
             }
 
@@ -74,44 +74,40 @@ h5,
 .featuredVideo {
     background-position: center;
     background-repeat: no-repeat;
-    background-color: rgb(248,247,231);
+    background-color: rgb(248, 247, 231);
     background-image: url('../images/tagwindow_bg.png');
     padding: 25px 0;
 
-    #videoRow {
-        min-height: 251px;
+    &.live {
+        background-color: rgba(230, 180, 138, 0.9);
+    }
 
-        &.live {
-            background-color: rgba(230, 180, 138, .9);
+    & > .col {
+        margin: 30px 0;
+    }
+
+    .countdown-counter {
+        text-align: center;
+        vertical-align: middle;
+
+        .countdown-title {
+            text-transform: uppercase;
+            display: block;
+            font-size: 30px;
         }
 
-        & > .col {
-            margin: 30px 0;
-        }
+        .timeslice {
+            display: inline-block;
+            margin: 0 30px;
 
-        .countdown-counter {
-            text-align: center;
-            vertical-align: middle;
-        
-            .countdown-title {
-                text-transform: uppercase;
+            span {
                 display: block;
-                font-size: 30px
+                font-weight: 200;
+                font-size: 80px;
             }
-            
-            .timeslice {
-                display: inline-block;
-                margin: 0 30px;
-            
-                span {
-                    display: block;
-                    font-weight: 200;
-                    font-size: 80px;
-                }
-                
-                .timeslice-unit {
-                    font-size: 24px;
-                }
+
+            .timeslice-unit {
+                font-size: 24px;
             }
         }
     }
@@ -123,12 +119,12 @@ h5,
     flex-grow: 0;
     flex-shrink: 0;
     box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.32);
-    border-radius: .25rem;
+    border-radius: 0.25rem;
     overflow: hidden;
     cursor: pointer;
     text-decoration: none;
     position: relative;
-    background-color: rgb(219,94,26);
+    background-color: $tag-orange;
 
     &::before {
         position: absolute;
@@ -136,9 +132,9 @@ h5,
         right: 0;
         bottom: 0;
         left: 0;
-        content: "";
+        content: '';
         display: none;
-        background-color: rgba(255,255,255,0.075);
+        background-color: rgba(255, 255, 255, 0.075);
     }
 
     &:hover {
@@ -162,16 +158,16 @@ h5,
         text-overflow: ellipsis;
         word-wrap: none;
         white-space: nowrap;
-        color: rgb(255,255,255);
+        color: rgb(255, 255, 255);
         font-size: 0.875rem;
         line-height: 19px;
     }
 
     .duration {
-        border-radius: .25rem;
-        background-color: rgba(0,0,0,.5);
+        border-radius: 0.25rem;
+        background-color: rgba(0, 0, 0, 0.5);
         padding: 4px 8px;
-        color: rgb(255,255,255);
+        color: rgb(255, 255, 255);
         position: absolute;
         font-size: 0.75rem;
         top: 10px;
@@ -184,21 +180,21 @@ h5,
     background-position: center;
     background-repeat: no-repeat;
     padding: 25px 0;
-    
+
     .about {
         background-size: 35%;
         background-position: center 45%;
         min-height: 120px;
 
         h1 {
-            font-size:28px;
+            font-size: 28px;
             margin-top: 20px;
             margin-bottom: 45px;
         }
-        
+
         img {
-            max-width:100%;
-            height:auto !important;
+            max-width: 100%;
+            height: auto !important;
         }
     }
 }
@@ -211,13 +207,13 @@ h5,
 }
 
 .content {
-	padding: 2rem 0;
+    padding: 2rem 0;
 }
 
 .panel {
-    border-radius: .25rem;
+    border-radius: 0.25rem;
     border: 1px solid rgba(0, 0, 0, 0.125);
-    background-color: rgb(255,255,255);
+    background-color: rgb(255, 255, 255);
     margin-bottom: 1rem;
 
     .panel-heading {
@@ -239,10 +235,80 @@ h5,
     -ms-overflow-style: -ms-autohiding-scrollbar;
 }
 
-.footer {
-    background-color: rgb(219,94,26);
-    color: rgb(255,255,255);
+.social--icons {
+    list-style: outside none none;
+    display: block;
+    padding: 0;
+    margin: 0;
+
+    & > li {
+        display: inline-block;
+        margin-right: 5px;
+        margin-bottom: 5px;
+
+        & > a {
+            display: block;
+            background-color: rgb(248, 247, 231);
+            padding: 10px 0;
+            text-align: center;
+            width: 44px;
+            border-radius: $border-radius;
+            color: $tag-orange;
+
+            &:hover,
+            &:focus {
+                background-color: darken(rgb(248, 247, 231), 7.5%);
+            }
+        }
+    }
+}
+
+.app--footer {
+    background-color: $tag-orange;
+    color: rgb(255, 255, 255);
     margin-top: 2rem;
+    padding: 4rem 0 0 0;
+
+    .app--footer__links {
+        list-style: outside none none;
+        display: block;
+        padding: 0;
+        margin: 0;
+
+        & > li {
+            display: block;
+            width: 100%;
+            padding: 0.5rem 0 0 0;
+
+            & > a {
+                text-decoration: none;
+            }
+        }
+    }
+
+    .app--footer__links,
+    .social--icons {
+        &::before {
+            display: block;
+            content: '';
+            border-radius: $border-radius;
+            height: 4px;
+            background-color: rgb(248, 247, 231);
+            width: 25%;
+        }
+    }
+
+    .social--icons {
+        &::before {
+            margin-bottom: 0.5rem;
+        }
+    }
+
+    .app--footer__copyright {
+        padding: 1rem 0 0 0;
+        margin-top: 3rem;
+        border-top: 2px solid rgb(248, 247, 231);
+    }
 }
 
 @media (max-width: 1199px) {
@@ -253,7 +319,7 @@ h5,
     #Bongeh,
     #Tommy {
         margin: 0 auto;
-        display:block;
+        display: block;
         max-width: 100%;
         height: auto;
     }
