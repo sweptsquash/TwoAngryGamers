@@ -2,7 +2,9 @@
 
 namespace App\Http\Resources;
 
+use Carbon\Carbon;
 use DateTime;
+use DateTimeZone;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ScheduleResource extends JsonResource
@@ -18,31 +20,20 @@ class ScheduleResource extends JsonResource
         $dayOfWeek = $this->start->format('l');
         $time = explode(':', $this->start->format('H:i:s'));
 
-        $start = new DateTime();
-        $start->setTimestamp(strtotime('next ' . $dayOfWeek));
-        $start->setTime($time[0], $time[1], $time[2]);
+        $start = new Carbon(
+            (new DateTime())
+                ->setTimestamp(strtotime('next ' . $dayOfWeek, Carbon::now()->getTimestamp()))
+                ->setTime($time[0], $time[1], $time[2]),
+            new DateTimeZone('UTC')
+        );
 
-        $end = new DateTime();
-
-        $interval = new DateTime();
-        $interval->setTimestamp(0);
-        $interval->add(new \DateInterval('PT'.$this->interval.'S'));
-        $intervalStamp = $interval->getTimestamp();
-
-        $duration = new \DateTime();
-        $duration->setTimestamp(0);
-        $duration->add(new \DateInterval('PT'.$this->duration.'S'));
-        $durationStamp = $duration->getTimestamp();
-
-        $dif = max(0, ceil(($end->getTimestamp() - $start->getTimestamp() - $durationStamp)/$intervalStamp));
-        $end->setTimestamp($start->getTimestamp() + $intervalStamp * $dif);
+        $end = clone $start;
+        $end->addSeconds($this->duration);
 
         return [
             'name'          => $this->name,
-            'interval'      => $this->interval,
-            'start'         => $start->format('Y-m-d H:i:s'),
-            'end'           => $end->add(new \DateInterval('PT'.$this->duration.'S'))->format('Y-m-d H:i:s'),
-            'duration'      => $this->duration,
+            'start'         => $start->format('d/m/Y H:i:s'),
+            'end'           => $end->format('d/m/Y H:i:s'),
             'description'   => $this->description,
             'special'       => $this->special,
         ];
