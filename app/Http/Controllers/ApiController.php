@@ -39,7 +39,7 @@ class ApiController extends Controller
 
             $start = new Carbon(
                 (new DateTime())
-                    ->setTimestamp(strtotime('next ' . $dayOfWeek, $now->getTimestamp()))
+                    ->setTimestamp(strtotime($dayOfWeek, $now->getTimestamp()))
                     ->setTime($time[0], $time[1], $time[2]),
                 new DateTimeZone('UTC')
             );

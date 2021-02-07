@@ -58,6 +58,7 @@ module.exports = {
 		'moment': 'readable',
         'route': 'readable',
         'Twitch': 'readable',
+		'twitchAPI': 'readable',
         'Vue': 'readable',
 	},
 }

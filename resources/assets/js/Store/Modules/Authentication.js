@@ -6,7 +6,12 @@ import {
     AUTH_ERROR,
     AUTH_EXPIRED,
 } from '@/Store/Actions/Authentication'
-import { USER_UPDATE, USER_LOGOUT } from '@/Store/Actions/User'
+import {
+    USER_UPDATE,
+    USER_CHECK_SUBSCRIPTION,
+    USER_CHECK_FOLLOWING,
+    USER_LOGOUT,
+} from '@/Store/Actions/User'
 import { Inertia } from '@inertiajs/inertia'
 
 const siteUrl =
@@ -42,18 +47,17 @@ export default {
 
             window.location.href =
                 'https://id.twitch.tv/oauth2/authorize?' +
-                'client_id=' +
-                Twitch.ClientID +
-                '&redirect_uri=' +
+                'client_id=5xrjahdm6fo4zkob8xl6to1hu0q8mci&redirect_uri=' +
                 encodeURI(siteUrl) +
                 '&response_type=token' +
-                '&scope=user_follows_edit'
+                '&scope=user_follows_edit%20user_subscriptions'
         },
-        [AUTH_REDIRECT]: ({ commit }, hash) => {
+        [AUTH_REDIRECT]: ({ commit, dispatch }, hash) => {
             if (hash) {
-                const user = window.axios.get('https://api.twitch.tv/kraken', {
-                    headers: { Authorization: 'OAuth ' + hash.access_token },
-                })
+                window.twitchAPI.defaults.headers.common['Authorization'] =
+                    'OAuth ' + hash.access_token
+
+                const user = window.twitchAPI.get('https://api.twitch.tv/kraken')
 
                 if (user.data) {
                     const expires = moment().add(1, 'hours').toDate()
@@ -69,8 +73,16 @@ export default {
 
                     Inertia.get('/', {}, { replace: true })
 
-                    commit(USER_UPDATE, { id: userData.id, name: userData.name })
+                    commit(USER_UPDATE, {
+                        id: userData.id,
+                        name: userData.name,
+                        isFollowing: false,
+                        isSubscribed: false,
+                    })
                     commit(AUTH_SUCCESS, hash.access_token)
+
+                    dispatch(USER_CHECK_FOLLOWING)
+                    dispatch(USER_CHECK_SUBSCRIPTION)
                 } else {
                     commit(AUTH_ERROR, 'Failed to retrieve user details')
                 }
@@ -85,7 +97,7 @@ export default {
             commit(USER_LOGOUT)
             commit(AUTH_LOGOUT)
 
-            window.axios.defaults.headers.common['Authorization'] = null
+            window.twitchAPI.defaults.headers.common['Authorization'] = null
 
             localStorage.removeItem('userToken')
         },

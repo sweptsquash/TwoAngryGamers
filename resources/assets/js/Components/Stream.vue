@@ -35,6 +35,9 @@
                         </div>
                     </div>
                 </b-col>
+                <template v-else-if="soonTM">
+                    
+                </template>
                 <template v-else>
                     <div class="player">
                         <div class="embed-responsive embed-responsive-16by9">
@@ -63,10 +66,10 @@
                             <b-col :sm="6" :md="6" class="text-right">
                                 <b-button
                                     v-if="isAuthorized"
-                                    :variant="isFollowing ? 'danger' : 'success'"
+                                    :variant="getUser.isFollowing ? 'danger' : 'success'"
                                     @click="handleFollowship"
                                 >
-                                    {{ isFollowing ? 'Unfollow' : 'Follow' }}
+                                    {{ getUser.isFollowing ? 'Unfollow' : 'Follow' }}
                                 </b-button>
                                 <b-button
                                     variant="light"
@@ -87,6 +90,7 @@
 </template>
 
 <script>
+import { USER_UPDATE } from '@/Store/Actions/User'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -104,29 +108,20 @@ export default {
             viewers: 0,
             soonTM: false,
             isLive: false,
-            isFollowing: false,
         }
     },
     computed: {
-        ...mapGetters(['isAuthorized']),
+        ...mapGetters(['isAuthorized','getUser']),
     },
     mounted: function () {
         this.streamCheck()
     },
     methods: {
         streamCheck: function () {
-            const instance = window.axios.create({
-                baseURL: 'https://api.twitch.tv/kraken',
-                headers: {
-                    'Client-ID': '5xrjahdm6fo4zkob8xl6to1hu0q8mci',
-                    Accept: 'application/vnd.twitchtv.v5+json',
-                },
-            })
-
             this.isLive = false
             this.soonTM = false
 
-            instance
+            window.twitchAPI
                 .get('/streams/56964879')
                 .then((response) => {
                     if (response.data.stream !== null) {
@@ -184,7 +179,25 @@ export default {
             }
         },
         handleFollowship: function () {
-            // TODO: Add Twitch logic
+            if(this.getUser.isFollowing) {
+                window.twitchAPI.put('/users/' + this.getUser.id + '/follows/channels/56964879')
+                    .then(() => {
+                        this.$store.commit(USER_UPDATE, {
+                            ...this.getUser,
+                            isFollowing: true,
+                        })
+                    })
+                    .catch(() => {})
+            } else {
+                window.twitchAPI.delete('/users/' + this.getUser.id + '/follows/channels/56964879')
+                    .then(() => {
+                        this.$store.commit(USER_UPDATE, {
+                            ...this.getUser,
+                            isFollowing: false,
+                        })
+                    })
+                    .catch(() => {})
+            }
         },
     },
 }

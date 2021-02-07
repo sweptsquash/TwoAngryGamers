@@ -22,7 +22,7 @@ class ScheduleResource extends JsonResource
 
         $start = new Carbon(
             (new DateTime())
-                ->setTimestamp(strtotime('next ' . $dayOfWeek, Carbon::now()->getTimestamp()))
+                ->setTimestamp(strtotime($dayOfWeek, Carbon::now()->getTimestamp()))
                 ->setTime($time[0], $time[1], $time[2]),
             new DateTimeZone('UTC')
         );

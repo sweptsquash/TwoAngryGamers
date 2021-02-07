@@ -1,4 +1,9 @@
-import { USER_UPDATE, USER_LOGOUT } from '@/Store/Actions/User'
+import {
+    USER_UPDATE,
+    USER_CHECK_SUBSCRIPTION,
+    USER_CHECK_FOLLOWING,
+    USER_LOGOUT,
+} from '@/Store/Actions/User'
 import { AUTH_SUCCESS, AUTH_EXPIRED, AUTH_LOGOUT } from '@/Store/Actions/Authentication'
 
 export default {
@@ -6,6 +11,8 @@ export default {
         user: {
             id: null,
             name: null,
+            isFollowing: false,
+            isSubscribed: false,
         },
     }),
     mutations: {
@@ -13,9 +20,13 @@ export default {
             state.user = user
         },
         [USER_LOGOUT]: (state) => {
+            window.twitchAPI.defaults.headers.common['Authorization'] = null
+
             state.user = {
                 id: null,
                 name: null,
+                isFollowing: false,
+                isSubscribed: false,
             }
         },
     },
@@ -27,15 +38,24 @@ export default {
                 userData = JSON.parse(userData)
 
                 if (moment(userData.expires).toDate() > moment().toDate()) {
-                    window.axios.defaults.headers.common['Authorization'] = 'OAuth ' + userData.token
+                    window.twitchAPI.defaults.headers.common['Authorization'] = 'OAuth ' + userData.token
 
-                    window.axios.get('https://id.twitch.tv/oauth2/validate')
+                    window.twitchAPI
+                        .get('https://api.twitch.tv/kraken')
                         .then((response) => {
-                            if (response.data.client_id === 'j083teggo6u0ls77yfy9medgxdtli1') {
+                            if (
+                                response.data.toke.valid === true &&
+                                response.data.token.client_id === '5xrjahdm6fo4zkob8xl6to1hu0q8mci'
+                            ) {
                                 commit(USER_UPDATE, {
-                                    id: userData.id,
-                                    name: userData.name,
+                                    id: response.data.token.user_id,
+                                    name: response.data.token.user_name,
+                                    isFollowing: false,
+                                    isSubscribed: false,
                                 })
+
+                                dispatch(USER_CHECK_FOLLOWING)
+                                dispatch(USER_CHECK_SUBSCRIPTION)
 
                                 commit(AUTH_SUCCESS, userData.token)
                             } else {
@@ -50,6 +70,40 @@ export default {
                 }
             } else {
                 dispatch(AUTH_EXPIRED)
+            }
+        },
+        [USER_CHECK_SUBSCRIPTION]: ({ commit }) => {
+            if (this.user.id !== null) {
+                window.twitchAPI
+                    .get(
+                        'https://api.twitch.tv/kraken/users/' +
+                            this.user.id +
+                            '/subscriptions/56964879',
+                    )
+                    .then(() => {
+                        commit(USER_UPDATE, {
+                            ...this.user,
+                            isSubscribed: true,
+                        })
+                    })
+                    .catch(() => {})
+            }
+        },
+        [USER_CHECK_FOLLOWING]: ({ commit }) => {
+            if (this.user.id !== null) {
+                window.twitchAPI
+                    .get(
+                        'https://api.twitch.tv/kraken/users/' +
+                            this.user.id +
+                            '/follows/channels/56964879',
+                    )
+                    .then(() => {
+                        commit(USER_UPDATE, {
+                            ...this.user,
+                            isFollowing: true,
+                        })
+                    })
+                    .catch(() => {})
             }
         },
     },
