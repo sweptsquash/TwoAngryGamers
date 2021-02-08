@@ -15,3 +15,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [HomeController::class, 'index'])->middleware('guest')->name('homepage');
+Route::get('/about', [HomeController::class, 'about'])->middleware('guest')->name('about');
+Route::get('/subperks', [HomeController::class, 'subperks'])->middleware('guest')->name('subperks');

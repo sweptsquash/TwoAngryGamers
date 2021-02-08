@@ -7,11 +7,11 @@
             <b-navbar-toggle target="nav-collapse" />
             <b-collapse id="nav-collapse" is-nav>
                 <b-navbar-nav class="ml-auto">
-                    <b-nav-item href="#">
+                    <b-nav-item :href="route('about')" :active="route().current('about')">
                         <font-awesome-icon :icon="['fas', 'info']" />
                         About
                     </b-nav-item>
-                    <b-nav-item href="#">
+                    <b-nav-item :href="route('subperks')" :active="route().current('subperks')">
                         <font-awesome-icon :icon="['fas', 'star']" />
                         Subperks
                     </b-nav-item>
