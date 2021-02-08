@@ -12,7 +12,7 @@
                         :data-description="countdown.description"
                     >
                         <span class="countdown-title" id="countdownTitle">
-                            {{ countdown.name }}
+                            {{ soonTM ? 'soonTM' : countdown.name }}
                         </span>
                         <div class="countdown-counter-container" id="countdownContainer">
                             <template v-for="unit in countdownUnits">
@@ -35,16 +35,13 @@
                         </div>
                     </div>
                 </b-col>
-                <template v-else-if="soonTM">
-                    
-                </template>
                 <template v-else>
                     <div class="player">
                         <div class="embed-responsive embed-responsive-16by9">
                             <iframe
                                 id="twitchVideoEmbed"
                                 class="embed-responsive-item"
-                                src="https://player.twitch.tv/?channel=twoangrygamerstv&quality=medium&autoplay=false&volume=0.3"
+                                src="https://player.twitch.tv/?channel=twoangrygamerstv&quality=medium&autoplay=false&volume=0.3&parent=twoangrygamers.test&parent=www.twoangrygamers.test"
                                 allowfullscreen
                                 frameborder="0"
                                 framespacing="0"
@@ -72,8 +69,7 @@
                                     {{ getUser.isFollowing ? 'Unfollow' : 'Follow' }}
                                 </b-button>
                                 <b-button
-                                    variant="light"
-                                    :href="url"
+                                    href="https://www.twitch.tv/twoangrygamerstv"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                 >
@@ -111,7 +107,7 @@ export default {
         }
     },
     computed: {
-        ...mapGetters(['isAuthorized','getUser']),
+        ...mapGetters(['isAuthorized', 'getUser']),
     },
     mounted: function () {
         this.streamCheck()
@@ -179,24 +175,28 @@ export default {
             }
         },
         handleFollowship: function () {
-            if(this.getUser.isFollowing) {
-                window.twitchAPI.put('/users/' + this.getUser.id + '/follows/channels/56964879')
-                    .then(() => {
-                        this.$store.commit(USER_UPDATE, {
-                            ...this.getUser,
-                            isFollowing: true,
+            if (this.isAuthorized) {
+                if (this.getUser.isFollowing) {
+                    window.twitchAPI
+                        .put('/users/' + this.getUser.id + '/follows/channels/56964879')
+                        .then(() => {
+                            this.$store.commit(USER_UPDATE, {
+                                ...this.getUser,
+                                isFollowing: true,
+                            })
                         })
-                    })
-                    .catch(() => {})
-            } else {
-                window.twitchAPI.delete('/users/' + this.getUser.id + '/follows/channels/56964879')
-                    .then(() => {
-                        this.$store.commit(USER_UPDATE, {
-                            ...this.getUser,
-                            isFollowing: false,
+                        .catch(() => {})
+                } else {
+                    window.twitchAPI
+                        .delete('/users/' + this.getUser.id + '/follows/channels/56964879')
+                        .then(() => {
+                            this.$store.commit(USER_UPDATE, {
+                                ...this.getUser,
+                                isFollowing: false,
+                            })
                         })
-                    })
-                    .catch(() => {})
+                        .catch(() => {})
+                }
             }
         },
     },
