@@ -17,18 +17,31 @@ class ScheduleResource extends JsonResource
      */
     public function toArray($request)
     {
+        $now = Carbon::now();
         $dayOfWeek = $this->start->format('l');
         $time = explode(':', $this->start->format('H:i:s'));
 
         $start = new Carbon(
             (new DateTime())
-                ->setTimestamp(strtotime($dayOfWeek, Carbon::now()->getTimestamp()))
+                ->setTimestamp(strtotime($dayOfWeek, $now->getTimestamp()))
                 ->setTime($time[0], $time[1], $time[2]),
             new DateTimeZone('UTC')
         );
 
         $end = clone $start;
         $end->addSeconds($this->duration);
+
+        if ($now->getTimestamp() > $end->getTimestamp()) {
+            $start = new Carbon(
+                (new DateTime())
+                    ->setTimestamp(strtotime('next ' . $dayOfWeek, $now->getTimestamp()))
+                    ->setTime($time[0], $time[1], $time[2]),
+                new DateTimeZone('UTC')
+            );
+
+            $end = clone $start;
+            $end->addSeconds($this->duration);
+        }
 
         return [
             'name'          => $this->name,

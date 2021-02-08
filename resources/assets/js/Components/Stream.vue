@@ -41,7 +41,7 @@
                             <iframe
                                 id="twitchVideoEmbed"
                                 class="embed-responsive-item"
-                                src="https://player.twitch.tv/?channel=twoangrygamerstv&quality=medium&autoplay=false&volume=0.3&parent=twoangrygamers.test&parent=www.twoangrygamers.test"
+                                src="https://player.twitch.tv/?channel=twoangrygamerstv&quality=medium&autoplay=true&muted=false&parent=twoangrygamers.tv&parent=www.twoangrygamers.tv&parent=development.twoangrygamers.tv"
                                 allowfullscreen
                                 frameborder="0"
                                 framespacing="0"
@@ -56,7 +56,7 @@
                                 <div class="p-2 text-light">
                                     <font-awesome-icon :icon="['fas', 'eye']" />
                                     <span id="viewers">
-                                        {{ viewers | formatNumber }}
+                                        {{ this.formatNumber(viewers) }}
                                     </span>
                                 </div>
                             </b-col>

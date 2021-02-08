@@ -1,38 +1,42 @@
 <template>
-    <nav aria-label="Page Navigation">
-        <ul class="pagination">
-            <li class="page-item" v-if="page.current > page.min">
-                <a class="page-link" href="#" aria-label="First Page">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            <li class="page-item" v-if="page.current > 1">
-                <a class="page-link" href="#" aria-label="Previous Page">
-                    <span aria-hidden="true">&lt;</span>
-                </a>
-            </li>
-            <li
-                v-for="p in page.range"
-                :key="`page${p}`"
-                class="page-item"
-                :class="{ active: page.current === p }"
-            >
-                <a class="page-link" href="#" @click.prevent="handleClick(p)">
-                    {{ p }}
-                </a>
-            </li>
-            <li class="page-item" v-if="page.total > 1 && page.current < page.total">
-                <a class="page-link" href="#" aria-label="Next Page">
-                    <span aria-hidden="true">&gt;</span>
-                </a>
-            </li>
-            <li class="page-item" v-if="page.max < page.total">
-                <a class="page-link" href="#" aria-label="Last Page">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
+    <b-row>
+        <b-col>
+            <nav aria-label="Page Navigation">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" v-if="page.current > page.min">
+                        <a class="page-link" href="#"  @click.prevent="handleClick(0)" aria-label="First Page">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item" v-if="page.current > 1">
+                        <a class="page-link" href="#"  @click.prevent="handleClick(page.current - 1)" aria-label="Previous Page">
+                            <span aria-hidden="true">&lt;</span>
+                        </a>
+                    </li>
+                    <li
+                        v-for="p in page.range"
+                        :key="`page${p}`"
+                        class="page-item"
+                        :class="{ active: page.current === p }"
+                    >
+                        <a class="page-link" href="#" @click.prevent="handleClick(p)">
+                            {{ p }}
+                        </a>
+                    </li>
+                    <li class="page-item" v-if="page.total > 1 && page.current < page.total">
+                        <a class="page-link" href="#"  @click.prevent="handleClick(page.current + 1)" aria-label="Next Page">
+                            <span aria-hidden="true">&gt;</span>
+                        </a>
+                    </li>
+                    <li class="page-item" v-if="page.max < page.total">
+                        <a class="page-link" href="#" @click.prevent="handleClick(page.total)" aria-label="Last Page">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </b-col>
+    </b-row>
 </template>
 
 <script>
@@ -77,7 +81,9 @@ export default {
     },
     methods: {
         handleClick: function (page) {
-            this.$emit('click', this.isTwitch ? this.pageSize * (page - 1) + 1 : page)
+            this.page.current = page
+
+            this.$emit('click', this.isTwitch ? this.pageSize * (page - 1) : page)
         },
         calcPagination: function () {
             this.page.total = Math.ceil(this.totalItems / this.pageSize)

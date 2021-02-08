@@ -32,19 +32,19 @@ class ScheduleSeeder extends Seeder
                 'special'       => false,
             ],
             [
-                'name'          => 'Battlefield Tuesday',
-                'interval'      => 604800,
-                'start'         => \DateTime::createFromFormat('Y-m-d H:i:s', '2016-11-15 20:00:00'),
-                'duration'      => 10800,
-                'description'   => 'raditionally a Battlefield 4 stream slot, this often encompasses games which allow 32-64 players on a server: Battlefront, Hardline and more.\r\nMeaning we can play with as many viewers as possible.',
-                'special'       => false,
-            ],
-            [
                 'name'          => 'Tuesday Afternoon',
                 'interval'      => 604800,
                 'start'         => \DateTime::createFromFormat('Y-m-d H:i:s', '2016-11-15 12:00:00'),
                 'duration'      => 18000,
                 'description'   => null,
+                'special'       => false,
+            ],
+            [
+                'name'          => 'Battlefield Tuesday',
+                'interval'      => 604800,
+                'start'         => \DateTime::createFromFormat('Y-m-d H:i:s', '2016-11-15 20:00:00'),
+                'duration'      => 10800,
+                'description'   => 'raditionally a Battlefield 4 stream slot, this often encompasses games which allow 32-64 players on a server: Battlefront, Hardline and more.\r\nMeaning we can play with as many viewers as possible.',
                 'special'       => false,
             ],
             [

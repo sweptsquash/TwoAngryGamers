@@ -1,25 +1,27 @@
 <template>
-    <b-row :class="{ 'd-none': !visible }" :id="`VOD-${service}`">
-        <b-alert variant="danger" class="text-center" :show="empty">No Videos Found.</b-alert>
-        <template v-if="!empty">
-            <VideoCard
-                v-for="(vod, index) in videos"
-                :key="`VOD-${service}-${index}`"
-                :VODId="vod.id"
-                :title="vod.title"
-                :url="vod.url"
-                :thumbnail="vod.thumbnail"
-                :duration="vod.duration"
-            />
-            <Paginate
-                v-if="totalVODs > 21"
-                :isTwitch="isTwitch || isTwitchHighlights"
-                :pageSize="21"
-                :totalItems="totalVODs"
-                @click="handleClick"
-            />
-        </template>
-    </b-row>
+    <div :class="{ 'd-none': !visible }" :id="`VOD-${service}`">
+        <b-row>
+            <b-alert variant="danger" class="text-center" :show="empty">No Videos Found.</b-alert>
+            <template v-if="!empty">
+                <VideoCard
+                    v-for="(vod, index) in videos"
+                    :key="`VOD-${service}-${index}`"
+                    :VODId="vod.id"
+                    :title="vod.title"
+                    :url="vod.url"
+                    :thumbnail="vod.thumbnail"
+                    :duration="vod.duration"
+                />
+            </template>
+        </b-row>
+        <Paginate
+            v-if="!empty && totalVODs > 21"
+            :isTwitch="isTwitch || isTwitchHighlights"
+            :pageSize="21"
+            :totalItems="totalVODs"
+            @click="handleClick"
+        />
+    </div>
 </template>
 
 <script>
@@ -77,6 +79,10 @@ export default {
 
                 if (offset !== 0) {
                     requestUrl += '&offset=' + offset
+                }
+
+                if (this.videos.length > 0) {
+                    this.videos = []
                 }
 
                 window.twitchAPI

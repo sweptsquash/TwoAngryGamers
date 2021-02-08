@@ -47,6 +47,18 @@ class ApiController extends Controller
             $end = clone $start;
             $end->addSeconds($event->duration);
 
+            if ($now->getTimestamp() > $end->getTimestamp()) {
+                $start = new Carbon(
+                    (new DateTime())
+                        ->setTimestamp(strtotime('next ' . $dayOfWeek, $now->getTimestamp()))
+                        ->setTime($time[0], $time[1], $time[2]),
+                    new DateTimeZone('UTC')
+                );
+    
+                $end = clone $start;
+                $end->addSeconds($event->duration);
+            }
+
             $streams[$start->getTimestamp()] = [
                 'name'          => $event->name,
                 'interval'      => $event->interval,
