@@ -1,7 +1,9 @@
 <template>
     <div :class="{ 'd-none': !visible }" :id="`VOD-${service}`">
         <b-row>
-            <b-alert variant="danger" class="text-center" :show="empty">No Videos Found.</b-alert>
+            <b-alert variant="danger" class="text-center flex-fill" :show="empty">
+                No Videos Found.
+            </b-alert>
             <template v-if="!empty">
                 <VideoCard
                     v-for="(vod, index) in videos"
@@ -61,7 +63,7 @@ export default {
         this.fetchVODs()
     },
     methods: {
-        handleClick: function(page) {
+        handleClick: function (page) {
             this.fetchVODs(page)
         },
         fetchVODs: function (offset = 0) {

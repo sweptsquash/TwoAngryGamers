@@ -38,7 +38,8 @@ export default {
                 userData = JSON.parse(userData)
 
                 if (moment(userData.expires).toDate() > moment().toDate()) {
-                    window.twitchAPI.defaults.headers.common['Authorization'] = 'OAuth ' + userData.token
+                    window.twitchAPI.defaults.headers.common['Authorization'] =
+                        'OAuth ' + userData.token
 
                     window.twitchAPI
                         .get('https://api.twitch.tv/kraken')

@@ -2,12 +2,8 @@
     <footer class="app--footer mt-auto">
         <b-container>
             <b-row>
-                <b-col :sm="12" :md="4">
-
-                </b-col>
-                <b-col :sm="12" :md="4">
-
-                </b-col>
+                <b-col :sm="12" :md="4"></b-col>
+                <b-col :sm="12" :md="4"></b-col>
                 <b-col :sm="12" :md="4">
                     <h4>Follow Us On</h4>
                     <ul class="social--icons">
@@ -86,7 +82,10 @@
             </b-row>
             <b-row class="app--footer__copyright">
                 <b-col class="text-center">
-                    <p>&copy; {{ year }} Two Angry Gamers. All Content is copyright &copy; it's respective copyright holders. All Rights Reserved.</p>
+                    <p>
+                        &copy; {{ year }} Two Angry Gamers. All Content is copyright &copy; it's
+                        respective copyright holders. All Rights Reserved.
+                    </p>
                 </b-col>
             </b-row>
         </b-container>
@@ -97,7 +96,7 @@
 export default {
     name: 'AppFooter',
     data() {
-        const now = new Date();
+        const now = new Date()
 
         return {
             year: now.getFullYear(),

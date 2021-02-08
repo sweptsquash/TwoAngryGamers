@@ -1,5 +1,12 @@
 <template>
-    <a :href="url" class="VOD" :id="`VOD-${VODId}`" target="_blank" rel="noopener noreferrer" :title="title">
+    <a
+        :href="url"
+        class="VOD"
+        :id="`VOD-${VODId}`"
+        target="_blank"
+        rel="noopener noreferrer"
+        :title="title"
+    >
         <div class="thumbnail" :style="`background-image: url(${thumbnail})`">
             <div class="duration">
                 {{

@@ -2,14 +2,24 @@
     <b-row>
         <b-col>
             <nav aria-label="Page Navigation">
-                <ul class="pagination justify-content-center">
+                <ul class="pagination justify-content-center mt-3">
                     <li class="page-item" v-if="page.current > page.min">
-                        <a class="page-link" href="#"  @click.prevent="handleClick(0)" aria-label="First Page">
+                        <a
+                            class="page-link"
+                            href="#"
+                            @click.prevent="handleClick(0)"
+                            aria-label="First Page"
+                        >
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
                     <li class="page-item" v-if="page.current > 1">
-                        <a class="page-link" href="#"  @click.prevent="handleClick(page.current - 1)" aria-label="Previous Page">
+                        <a
+                            class="page-link"
+                            href="#"
+                            @click.prevent="handleClick(page.current - 1)"
+                            aria-label="Previous Page"
+                        >
                             <span aria-hidden="true">&lt;</span>
                         </a>
                     </li>
@@ -24,12 +34,22 @@
                         </a>
                     </li>
                     <li class="page-item" v-if="page.total > 1 && page.current < page.total">
-                        <a class="page-link" href="#"  @click.prevent="handleClick(page.current + 1)" aria-label="Next Page">
+                        <a
+                            class="page-link"
+                            href="#"
+                            @click.prevent="handleClick(page.current + 1)"
+                            aria-label="Next Page"
+                        >
                             <span aria-hidden="true">&gt;</span>
                         </a>
                     </li>
                     <li class="page-item" v-if="page.max < page.total">
-                        <a class="page-link" href="#" @click.prevent="handleClick(page.total)" aria-label="Last Page">
+                        <a
+                            class="page-link"
+                            href="#"
+                            @click.prevent="handleClick(page.total)"
+                            aria-label="Last Page"
+                        >
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
