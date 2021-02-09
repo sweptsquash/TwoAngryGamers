@@ -1,20 +1,30 @@
 <template>
     <b-navbar toggleable="lg" fixed="top">
         <b-container>
-            <b-navbar-brand href="/">
+            <inertia-link :href="route('homepage')" class="navbar-brand">
                 <img :src="logo" alt="Two Angry Gamers" />
-            </b-navbar-brand>
+            </inertia-link>
             <b-navbar-toggle target="nav-collapse" />
             <b-collapse id="nav-collapse" is-nav>
                 <b-navbar-nav class="ml-auto">
-                    <b-nav-item :href="route('about')" :active="route().current('about')">
-                        <font-awesome-icon :icon="['fas', 'info']" />
-                        About
-                    </b-nav-item>
-                    <b-nav-item :href="route('subperks')" :active="route().current('subperks')">
-                        <font-awesome-icon :icon="['fas', 'star']" />
-                        Subperks
-                    </b-nav-item>
+                    <li class="nav-item">
+                        <inertia-link
+                            :href="route('about')"
+                            :class="{ 'nav-link': true, active: route().current('about') }"
+                        >
+                            <font-awesome-icon :icon="['fas', 'info']" />
+                            About
+                        </inertia-link>
+                    </li>
+                    <li class="nav-item">
+                        <inertia-link
+                            :href="route('subperks')"
+                            :class="{ 'nav-link': true, active: route().current('subperks') }"
+                        >
+                            <font-awesome-icon :icon="['fas', 'star']" />
+                            Subperks
+                        </inertia-link>
+                    </li>
                     <b-nav-item
                         href="https://www.designbyhumans.com/shop/TwoAngryGamersTV/"
                         target="_blank"
