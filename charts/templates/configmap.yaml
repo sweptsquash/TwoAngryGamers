@@ -102,8 +102,8 @@ data:
         ServerAlias www.twoangrygamers.test
         ServerAdmin info@senshudo.tv
 
-        DocumentRoot /var/www/twoangrygamers.test/public
-        <Directory /var/www/twoangrygamers.test/public>
+        DocumentRoot /var/www/twoangrygamers.test/public_html
+        <Directory /var/www/twoangrygamers.test/public_html>
             DirectoryIndex index.php
             Options Indexes FollowSymLinks
             AllowOverride All

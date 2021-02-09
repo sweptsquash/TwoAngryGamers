@@ -57,7 +57,7 @@ export default {
                 window.twitchAPI.defaults.headers.common['Authorization'] =
                     'OAuth ' + hash.access_token
 
-                const user = window.twitchAPI.get('https://api.twitch.tv/kraken')
+                const user = window.twitchAPI.get('/')
 
                 if (user.data) {
                     const expires = moment().add(1, 'hours').toDate()
