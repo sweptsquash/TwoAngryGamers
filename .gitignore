@@ -4,7 +4,7 @@ config/secrets/prod/prod.decrypt.private.php
 /public/storage
 /public/css
 /public/js
-/public/img
+/public/images
 /public/fonts
 /public/mix-manifest.json
 /public/robots.txt

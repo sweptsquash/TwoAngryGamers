@@ -14,10 +14,6 @@
         <meta name="theme-color" content="#ffffff">
         <meta name="keywords" content="TAG, Two Angry Gamers, TwoAngryGamersTV, Angry Gamers" />
         <meta name="description" content="Two Angry Gamers are a full time gaming duo providing entertainment to the masses via Twitch and YouTube." />
-        <link rel="canonical" href="https://www.twoangrygamers.tv/" />
-        <meta property="og:url" content="https://www.twoangrygamers.tv/" />
-        <meta property="og:title" content="Two Angry Gamers" />
-        <meta name="twitter:title" content="Two Angry Gamers">
         <meta property="fb:pages" content="265951180209853" />
         <meta property="og:site_name" content="Two Angry Gamers" />
         <meta property="og:locale" content="en_GB" />

@@ -67,6 +67,21 @@ new Vue({
     store,
     metaInfo: {
         titleTemplate: (title) => (title ? `${title} | Two Angry Gamers` : 'Two Angry Gamers'),
+        link: [{ rel: 'canonical', href: 'https://www.twoangrygamers.tv' }],
+        meta: [
+            {
+                property: 'og:title',
+                content: 'Two Angry Gamers',
+            },
+            {
+                name: 'twitter:title',
+                content: 'Two Angry Gamers',
+            },
+            {
+                property: 'og:url',
+                content: 'https://www.twoangrygamers.tv',
+            },
+        ],
     },
     render: (h) =>
         h(App, {
