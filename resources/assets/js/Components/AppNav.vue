@@ -1,5 +1,5 @@
 <template>
-    <b-navbar toggleable="lg" fixed="top">
+    <b-navbar toggleable="lg">
         <b-container>
             <inertia-link :href="route('homepage')" class="navbar-brand">
                 <img :src="logo" alt="Two Angry Gamers" />

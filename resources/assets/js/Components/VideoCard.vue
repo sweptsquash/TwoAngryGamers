@@ -8,7 +8,7 @@
         :title="title"
     >
         <div class="thumbnail" :style="`background-image: url(${thumbnail})`">
-            <div class="duration">
+            <div class="duration" v-if="duration !== 0">
                 {{
                     typeof duration === 'number'
                         ? moment.unix(duration).format('H:mm:ss')

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApiController;
+use Facade\FlareClient\Api;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,3 +19,5 @@ Route::middleware(['api', 'guest', 'throttle:10,1'])->prefix('schedule')->name('
     Route::get('/', [ApiController::class, 'scheduleList'])->name('list');
     Route::get('/next', [ApiController::class, 'scheduleNext'])->name('next');
 });
+
+Route::get('/youtube', [ApiController::class, 'fetchYouTube'])->name('youtube');

@@ -120,11 +120,32 @@ export default {
                             })
                         })
                     })
-                    .catch(() => {})
+                    .catch(() => {
+                        this.empty = true
+                    })
             } else if (this.isYoutube) {
                 this.service = 'youtube'
 
-                // TODO: Add Google API info
+                window.axios
+                    .get('/youtube')
+                    .then((response) => {
+                        this.empty = false
+
+                        response.data.videos.forEach((vod) => {
+                            this.videos.push({
+                                id: vod.id,
+                                title: vod.title,
+                                url: vod.url,
+                                thumbnail: vod.thumbnail,
+                                duration: 0,
+                            })
+                        })
+
+                        this.totalVODs = response.data.videos.length
+                    })
+                    .catch(() => {
+                        this.empty = false
+                    })
             }
         },
     },
