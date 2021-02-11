@@ -2,7 +2,18 @@
     <footer class="app--footer mt-auto">
         <b-container>
             <b-row>
-                <b-col :sm="12" :md="4"></b-col>
+                <b-col :sm="12" :md="4">
+                    <h4>About Us</h4>
+                    <p>
+                        Hey there! We are the two angry gamers - TOMMYRAGE & Bongeh. We like games,
+                        but they dont like us.
+                    </p>
+                    <p>
+                        <inertia-link :href="route('about')" class="text-light">
+                            Find Out More
+                        </inertia-link>
+                    </p>
+                </b-col>
                 <b-col :sm="12" :md="4"></b-col>
                 <b-col :sm="12" :md="4">
                     <h4>Follow Us On</h4>

@@ -144,7 +144,7 @@ export default {
                         this.totalVODs = response.data.videos.length
                     })
                     .catch(() => {
-                        this.empty = false
+                        this.empty = true
                     })
             }
         },

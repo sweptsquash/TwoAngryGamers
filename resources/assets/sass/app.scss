@@ -259,6 +259,7 @@ h5,
     display: block;
     padding: 0;
     margin: 0;
+    max-width: 210px;
 
     & > li {
         display: inline-block;
@@ -305,21 +306,15 @@ h5,
         }
     }
 
-    .app--footer__links,
-    .social--icons {
-        &::before {
+    h4 {
+        &::after {
             display: block;
             content: '';
             border-radius: $border-radius;
             height: 4px;
             background-color: rgb(248, 247, 231);
             width: 25%;
-        }
-    }
-
-    .social--icons {
-        &::before {
-            margin-bottom: 0.5rem;
+            margin-top: 0.25rem;
         }
     }
 
