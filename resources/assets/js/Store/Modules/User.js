@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import {
     USER_UPDATE,
     USER_CHECK_SUBSCRIPTION,
@@ -37,7 +38,10 @@ export default {
             if (userData !== undefined && userData !== null && userData !== '') {
                 userData = JSON.parse(userData)
 
-                if (moment(userData.expires).toDate() > moment().toDate()) {
+                if (
+                    Vue.prototype.moment(userData.expires).toDate() >
+                    Vue.prototype.moment().toDate()
+                ) {
                     window.twitchAPI.defaults.headers.common['Authorization'] =
                         'OAuth ' + userData.token
 
@@ -45,7 +49,7 @@ export default {
                         .get('https://api.twitch.tv/kraken')
                         .then((response) => {
                             if (
-                                response.data.toke.valid === true &&
+                                response.data.token.valid === true &&
                                 response.data.token.client_id === '5xrjahdm6fo4zkob8xl6to1hu0q8mci'
                             ) {
                                 commit(USER_UPDATE, {

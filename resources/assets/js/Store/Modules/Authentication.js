@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import {
     AUTH_LOGIN,
     AUTH_REDIRECT,
@@ -12,7 +13,6 @@ import {
     USER_CHECK_FOLLOWING,
     USER_LOGOUT,
 } from '@/Store/Actions/User'
-import { Inertia } from '@inertiajs/inertia'
 
 const siteUrl =
     'https://' +
@@ -57,35 +57,47 @@ export default {
                 window.twitchAPI.defaults.headers.common['Authorization'] =
                     'OAuth ' + hash.access_token
 
-                const user = window.twitchAPI.get('/')
+                window.twitchAPI
+                    .get('/')
+                    .then((response) => {
+                        if (
+                            response.data.token.valid === true &&
+                            response.data.token.client_id === '5xrjahdm6fo4zkob8xl6to1hu0q8mci'
+                        ) {
+                            const expires = Vue.prototype.moment().add(1, 'hours').toDate()
 
-                if (user.data) {
-                    const expires = moment().add(1, 'hours').toDate()
+                            const userData = {
+                                token: hash.access_token,
+                                id: parseInt(response.data.token.user_id),
+                                name: response.data.token.user_name,
+                                expires: expires,
+                            }
 
-                    const userData = {
-                        token: hash.access_token,
-                        id: parseInt(user.data.token.user_id),
-                        name: user.data.token.user_name,
-                        expires: expires,
-                    }
+                            localStorage.setItem('userToken', JSON.stringify(userData))
 
-                    localStorage.setItem('userToken', JSON.stringify(userData))
+                            Vue.prototype.$inertia.get(
+                                '/',
+                                {},
+                                { replace: true, preserveState: true, preserveScroll: true },
+                            )
 
-                    Inertia.get('/', {}, { replace: true })
+                            commit(USER_UPDATE, {
+                                id: userData.id,
+                                name: userData.name,
+                                isFollowing: false,
+                                isSubscribed: false,
+                            })
+                            commit(AUTH_SUCCESS, hash.access_token)
 
-                    commit(USER_UPDATE, {
-                        id: userData.id,
-                        name: userData.name,
-                        isFollowing: false,
-                        isSubscribed: false,
+                            dispatch(USER_CHECK_FOLLOWING)
+                            dispatch(USER_CHECK_SUBSCRIPTION)
+                        } else {
+                            commit(AUTH_ERROR, 'Failed to retrieve user details')
+                        }
                     })
-                    commit(AUTH_SUCCESS, hash.access_token)
-
-                    dispatch(USER_CHECK_FOLLOWING)
-                    dispatch(USER_CHECK_SUBSCRIPTION)
-                } else {
-                    commit(AUTH_ERROR, 'Failed to retrieve user details')
-                }
+                    .catch(() => {
+                        commit(AUTH_ERROR)
+                    })
             } else {
                 commit(AUTH_ERROR)
             }

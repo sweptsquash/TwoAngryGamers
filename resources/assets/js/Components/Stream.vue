@@ -53,7 +53,7 @@
                     <div class="playerBtns">
                         <b-row>
                             <b-col :sm="6" :md="6">
-                                <div class="p-2 text-light">
+                                <div class="p-2">
                                     <font-awesome-icon :icon="['fas', 'eye']" />
                                     <span id="viewers">
                                         {{ this.formatNumber(viewers) }}

@@ -21,19 +21,19 @@ export default {
     mounted: function () {
         if (this.$store.getters.isAuthorized) {
             this.$store.dispatch(USER_UPDATE)
-        }
+        } else {
+            let hash = document.location.hash
 
-        let hash = document.location.hash
+            if (hash) {
+                hash = hash
+                    .substr(1)
+                    .split('&')
+                    .map((v) => v.split('='))
+                    .reduce((pre, [key, value]) => ({ ...pre, [key]: value }), {})
 
-        if (hash) {
-            hash = hash
-                .substr(1)
-                .split('&')
-                .map((v) => v.split('='))
-                .reduce((pre, [key, value]) => ({ ...pre, [key]: value }), {})
-
-            if (Object.prototype.hasOwnProperty.call(hash, 'access_token')) {
-                this.$store.dispatch(AUTH_REDIRECT, hash)
+                if (Object.prototype.hasOwnProperty.call(hash, 'access_token')) {
+                    this.$store.dispatch(AUTH_REDIRECT, hash)
+                }
             }
         }
     },
