@@ -77,12 +77,6 @@ export default {
             VODIcon: 'twitch',
         }
     },
-    mounted: function () {
-        const twitterJS = document.createElement('script')
-        twitterJS.setAttribute('src', 'https://platform.twitter.com/widgets.js')
-        twitterJS.setAttribute('charset', 'utf-8')
-        document.body.appendChild(twitterJS)
-    },
     methods: {
         changeVOD: function (service) {
             if (service !== null) {

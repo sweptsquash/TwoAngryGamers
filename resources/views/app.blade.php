@@ -58,5 +58,6 @@
             ga('create', 'UA-47746245-4', 'auto');
             ga('send', 'pageview');
         </script>
+        <script type="text/javascript" async src="https://platform.twitter.com/widgets.js"></script>
     </body>
 </html>
