@@ -88,6 +88,16 @@
                                 <font-awesome-icon :icon="['fab', 'discord']" />
                             </a>
                         </li>
+                        <li>
+                            <a
+                                href="https://github.com/sweptsquash/TwoAngryGamers"
+                                target="_blank"
+                                title="GitHub"
+                                rel="noopener noreferrer"
+                            >
+                                <font-awesome-icon :icon="['fab', 'github']" />
+                            </a>
+                        </li>
                     </ul>
                 </b-col>
             </b-row>

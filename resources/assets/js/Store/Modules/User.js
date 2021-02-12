@@ -46,7 +46,7 @@ export default {
                         'OAuth ' + userData.token
 
                     window.twitchAPI
-                        .get('https://api.twitch.tv/kraken')
+                        .get('/')
                         .then((response) => {
                             if (
                                 response.data.token.valid === true &&
@@ -77,34 +77,26 @@ export default {
                 dispatch(AUTH_EXPIRED)
             }
         },
-        [USER_CHECK_SUBSCRIPTION]: ({ commit }) => {
-            if (this.user.id !== null) {
+        [USER_CHECK_SUBSCRIPTION]: ({ state, commit }) => {
+            if (state.user.id !== null) {
                 window.twitchAPI
-                    .get(
-                        'https://api.twitch.tv/kraken/users/' +
-                            this.user.id +
-                            '/subscriptions/56964879',
-                    )
+                    .get('/users/' + state.user.id + '/subscriptions/56964879')
                     .then(() => {
                         commit(USER_UPDATE, {
-                            ...this.user,
+                            ...state.user,
                             isSubscribed: true,
                         })
                     })
                     .catch(() => {})
             }
         },
-        [USER_CHECK_FOLLOWING]: ({ commit }) => {
-            if (this.user.id !== null) {
+        [USER_CHECK_FOLLOWING]: ({ state, commit }) => {
+            if (state.user.id !== null) {
                 window.twitchAPI
-                    .get(
-                        'https://api.twitch.tv/kraken/users/' +
-                            this.user.id +
-                            '/follows/channels/56964879',
-                    )
+                    .get('/users/' + state.user.id + '/follows/channels/56964879')
                     .then(() => {
                         commit(USER_UPDATE, {
-                            ...this.user,
+                            ...state.user,
                             isFollowing: true,
                         })
                     })

@@ -7,7 +7,7 @@
                         <a
                             class="page-link"
                             href="#"
-                            @click.prevent="handleClick(0)"
+                            @click.prevent="handleClick(1)"
                             aria-label="First Page"
                         >
                             <span aria-hidden="true">&laquo;</span>
@@ -103,7 +103,10 @@ export default {
         handleClick: function (page) {
             this.page.current = page
 
-            this.$emit('click', this.isTwitch ? this.pageSize * (page - 1) : page)
+            this.$emit(
+                'click',
+                this.isTwitch ? (page === 1 ? 0 : this.pageSize * (page - 1)) : page,
+            )
         },
         calcPagination: function () {
             this.page.total = Math.ceil(this.totalItems / this.pageSize)
