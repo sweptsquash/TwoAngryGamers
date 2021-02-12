@@ -54,11 +54,14 @@
                         <b-row>
                             <b-col :sm="6" :md="6">
                                 <div class="p-2">
-                                    <font-awesome-icon :icon="['fas', 'eye']" />
                                     <span id="viewers">
+                                        <font-awesome-icon :icon="['fas', 'eye']" />
                                         {{ this.formatNumber(viewers) }}
                                     </span>
                                 </div>
+                                <b-tooltip target="viewers" triggers="hover">
+                                    {{ this.formatNumber(viewers) }} Viewers
+                                </b-tooltip>
                             </b-col>
                             <b-col :sm="6" :md="6" class="text-right">
                                 <b-button
@@ -110,25 +113,27 @@ export default {
         ...mapGetters(['isAuthorized', 'getUser']),
     },
     mounted: function () {
-        this.streamCheck()
+        this.fetchSchedule()
     },
     methods: {
         streamCheck: function () {
-            this.isLive = false
-            this.soonTM = false
-
             window.twitchAPI
                 .get('/streams/56964879')
                 .then((response) => {
                     if (response.data.stream !== null) {
                         this.isLive = true
+                        this.soonTM = false
                         this.viewers = response.data.stream.viewers
                     } else {
-                        this.fetchSchedule()
+                        this.isLive = false
+                        this.soonTM = false
+                        this.updateCountdown(true)
                     }
                 })
                 .catch(() => {
-                    this.fetchSchedule()
+                    this.isLive = false
+                    this.soonTM = false
+                    this.updateCountdown(true)
                 })
         },
         fetchSchedule: function () {
@@ -139,11 +144,18 @@ export default {
 
                     this.updateCountdown()
                 })
-                .catch((e) => {
-                    console.log(e)
+                .catch(() => {
+                    this.isLive = false
+                    this.soonTM = false
+
+                    setTimeout(this.fetchSchedule(), 60000)
                 })
         },
-        updateCountdown: function () {
+        updateCountdown: function (reset = false) {
+            if (reset) {
+                clearInterval(this.countdownTimer)
+            }
+
             const countdownNow = this.moment.now()
             const countdownStart = this.moment.unix(this.countdown.start)
             const countdownEnd = this.moment.unix(this.countdown.end)
@@ -168,14 +180,17 @@ export default {
                 }
             }
 
-            if (this.countdownTimer === undefined || this.countdownTimer === null) {
+            if (this.isLive || this.soonTM) {
+                clearInterval(this.countdownTimer)
+
+                // Alter interval to check status every two minutes
+                this.countdownTimer = setInterval(() => {
+                    this.updateCountdown()
+                }, 120000)
+            } else if (this.countdownTimer === undefined || this.countdownTimer === null) {
                 this.countdownTimer = setInterval(() => {
                     this.updateCountdown()
                 }, 1000)
-            } else if (this.soonTM) {
-                this.countdownTimer = setInterval(() => {
-                    this.updateCountdown()
-                }, 60000)
             }
         },
         handleFollowship: function () {
