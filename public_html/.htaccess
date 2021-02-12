@@ -61,7 +61,9 @@
     </IfModule>
 
     RewriteEngine On
+	RewriteBase /
 
+	# Ensure HTTPS
     RewriteCond %{HTTPS} off [OR]
     RewriteCond %{HTTP_HOST} !^www\. [NC]
     RewriteRule ^(.*)$ https://www.twoangrygamers.tv/$1 [R=301,L]

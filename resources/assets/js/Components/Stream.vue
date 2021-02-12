@@ -113,6 +113,13 @@ export default {
         ...mapGetters(['isAuthorized', 'getUser']),
     },
     mounted: function () {
+        this.$once(
+            'hook:destroyed',
+            this.$inertia.on('start', () => {
+                clearInterval(this.countdownTimer)
+            }),
+        )
+
         this.fetchSchedule()
     },
     methods: {
