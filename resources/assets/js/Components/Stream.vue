@@ -172,6 +172,10 @@ export default {
                 this.countdownTimer = setInterval(() => {
                     this.updateCountdown()
                 }, 1000)
+            } else if (this.soonTM) {
+                this.countdownTimer = setInterval(() => {
+                    this.updateCountdown()
+                }, 60000)
             }
         },
         handleFollowship: function () {
