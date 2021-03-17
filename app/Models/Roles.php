@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
-use Database\Factories\ScheduleFactory;
+use Database\Factories\RolesFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Schedule extends Model
+class Roles extends Model
 {
     use HasFactory;
 
@@ -15,7 +15,7 @@ class Schedule extends Model
      *
      * @var string
      */
-    protected $table = 'schedule';
+    protected $table = 'roles';
 
     /**
      * The attributes that are mass assignable.
@@ -24,11 +24,7 @@ class Schedule extends Model
      */
     protected $fillable = [
         'name',
-        'interval',
-        'start',
-        'duration',
-        'description',
-        'special',
+        'permissions',
     ];
 
     /**
@@ -43,15 +39,15 @@ class Schedule extends Model
      *
      * @var array
      */
-    protected $casts = [
-        'interval'  => 'integer',
-        'start'     => 'datetime',
-        'duration'  => 'integer',
-        'special'   => 'boolean',
-    ];
+    protected $casts = [];
 
     protected static function newFactory()
     {
-        return ScheduleFactory::new();
+        return RolesFactory::new();
+    }
+
+    public function editors()
+    {
+        return $this->hasMany(Editors::class, 'id', 'id');
     }
 }

@@ -11,7 +11,7 @@ use DateTimeZone;
 use Google_Client;
 use Google_Service_YouTube;
 
-class ApiController extends Controller
+class ScheduleController extends Controller
 {
     /**
      * Schedule List
@@ -56,7 +56,7 @@ class ApiController extends Controller
                         ->setTime($time[0], $time[1], $time[2]),
                     new DateTimeZone('UTC')
                 );
-    
+
                 $end = clone $start;
                 $end->addSeconds($event->duration);
             }

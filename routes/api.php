@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\ApiController;
-use Facade\FlareClient\Api;
+use App\Http\Controllers\EditorController;
+use App\Http\Controllers\ScheduleController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,9 +15,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['api', 'guest', 'throttle:10,1'])->prefix('schedule')->name('schedule.')->group(function () {
-    Route::get('/', [ApiController::class, 'scheduleList'])->name('list');
-    Route::get('/next', [ApiController::class, 'scheduleNext'])->name('next');
-});
+Route::middleware(['api', 'guest', 'throttle:20,1'])->group(function () {
+    Route::prefix('schedule')->name('schedule.')->group(function () {
+        Route::get('/', [ScheduleController::class, 'scheduleList'])->name('list');
+        Route::get('/next', [ScheduleController::class, 'scheduleNext'])->name('next');
+    });
 
-Route::get('/youtube', [ApiController::class, 'fetchYouTube'])->name('youtube');
+    Route::get('/youtube', [ScheduleController::class, 'fetchYouTube'])->name('youtube');
+
+    Route::prefix('editor')->name('editor.')->group(function () {
+        Route::get('/{id}', [EditorController::class, 'show'])->name('show');
+    });
+});
