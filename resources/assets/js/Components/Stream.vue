@@ -163,41 +163,44 @@ export default {
                 clearInterval(this.countdownTimer)
             }
 
-            const countdownNow = this.moment.now()
-            const countdownStart = this.moment.unix(this.countdown.start)
-            const countdownEnd = this.moment.unix(this.countdown.end)
+            if (this.countdown.name !== null) {
+                const countdownNow = this.moment.now()
+                const countdownStart = this.moment.unix(this.countdown.start)
+                const countdownEnd = this.moment.unix(this.countdown.end)
 
-            if (this.moment(countdownNow).isAfter(countdownEnd)) {
-                this.streamCheck()
-            } else if (this.moment(countdownNow).isAfter(countdownStart)) {
-                this.soonTM = true
-                this.streamCheck()
-            } else {
-                const counter = this.moment.duration(countdownStart - countdownNow)
+                if (this.moment(countdownNow).isAfter(countdownEnd)) {
+                    this.streamCheck()
+                } else if (this.moment(countdownNow).isAfter(countdownStart)) {
+                    this.soonTM = true
+                    this.streamCheck()
+                } else {
+                    const counter = this.moment.duration(countdownStart - countdownNow)
 
-                for (let i = 0; i < this.countdownUnits.length; i++) {
-                    const unit = this.countdownUnits[i]
-                    const unitLower = unit.toLowerCase()
-                    const timeslice = document.getElementById('countdown-' + unitLower)
-                    const value = counter[unitLower]()
+                    for (let i = 0; i < this.countdownUnits.length; i++) {
+                        const unit = this.countdownUnits[i]
+                        const unitLower = unit.toLowerCase()
+                        const timeslice = document.getElementById('countdown-' + unitLower)
+                        const value = counter[unitLower]()
 
-                    timeslice.childNodes[0].innerText = value
-                    timeslice.childNodes[1].innerText =
-                        value !== 1 ? unit : unit.substr(0, unit.length - 1)
+                        timeslice.childNodes[0].innerText = value
+                        timeslice.childNodes[1].innerText =
+                            value !== 1 ? unit : unit.substr(0, unit.length - 1)
+                    }
                 }
-            }
 
-            if (this.isLive || this.soonTM) {
-                clearInterval(this.countdownTimer)
+                if (this.isLive || this.soonTM) {
+                    clearInterval(this.countdownTimer)
 
-                // Alter interval to check status every two minutes
-                this.countdownTimer = setInterval(() => {
-                    this.updateCountdown()
-                }, 120000)
-            } else if (this.countdownTimer === undefined || this.countdownTimer === null) {
-                this.countdownTimer = setInterval(() => {
-                    this.updateCountdown()
-                }, 1000)
+                    this.countdownTimer = setInterval(() => {
+                        this.updateCountdown()
+                    }, 120000)
+                } else if (this.countdownTimer === undefined || this.countdownTimer === null) {
+                    this.countdownTimer = setInterval(() => {
+                        this.updateCountdown()
+                    }, 1000)
+                }
+            } else {
+                this.fetchSchedule()
             }
         },
         handleFollowship: function () {
