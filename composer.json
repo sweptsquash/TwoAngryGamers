@@ -17,6 +17,7 @@
         "juhlinus/depictr": "^1.0",
         "laravel/framework": "^8.17.1",
         "laravel/tinker": "^2.5.0",
+        "php-ffmpeg/php-ffmpeg": "^0.17.0",
         "tightenco/ziggy": "^1.0.3"
     },
     "require-dev": {

@@ -3,6 +3,7 @@ import {
     USER_UPDATE,
     USER_CHECK_SUBSCRIPTION,
     USER_CHECK_FOLLOWING,
+    USER_CHECK_ROLES,
     USER_LOGOUT,
 } from '@/Store/Actions/User'
 import { AUTH_SUCCESS, AUTH_EXPIRED, AUTH_LOGOUT } from '@/Store/Actions/Authentication'
@@ -102,6 +103,12 @@ export default {
                     })
                     .catch(() => {})
             }
+        },
+        [USER_CHECK_ROLES]: ({ state, commit }) => {
+            window.axios
+                .get('/editors/me')
+                .then(() => {})
+                .catch(() => {})
         },
     },
     getters: {

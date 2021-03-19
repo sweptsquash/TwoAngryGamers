@@ -14,6 +14,7 @@ RUN apt-get update && apt-get install -y \
     wget \
     make \
     unzip \
+    ffmpeg \
     dialog \
     locales \
     libtool \
