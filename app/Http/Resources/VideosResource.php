@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class EditorResource extends JsonResource
+class VideosResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,8 +16,11 @@ class EditorResource extends JsonResource
     {
         return [
             'id'            => $this->id,
-            'name'          => $this->name,
-            'permissions'   => $this->permissions,
+            'title'         => $this->title,
+            'author'        => $this->author,
+            'created'       => $this->created,
+            'filename'      => $this->filename,
+            'thumbnail'     => $this->thumbnail,
         ];
     }
 }

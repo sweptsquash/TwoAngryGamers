@@ -15,6 +15,7 @@ export default {
             name: null,
             isFollowing: false,
             isSubscribed: false,
+            permissions: [],
         },
     }),
     mutations: {
@@ -29,6 +30,7 @@ export default {
                 name: null,
                 isFollowing: false,
                 isSubscribed: false,
+                permissions: [],
             }
         },
     },
@@ -58,10 +60,12 @@ export default {
                                     name: response.data.token.user_name,
                                     isFollowing: false,
                                     isSubscribed: false,
+                                    permissions: [],
                                 })
 
                                 dispatch(USER_CHECK_FOLLOWING)
                                 dispatch(USER_CHECK_SUBSCRIPTION)
+                                dispatch(USER_CHECK_ROLES)
 
                                 commit(AUTH_SUCCESS, userData.token)
                             } else {
@@ -105,10 +109,14 @@ export default {
             }
         },
         [USER_CHECK_ROLES]: ({ state, commit }) => {
-            window.axios
-                .get('/editors/me')
-                .then(() => {})
-                .catch(() => {})
+            if (state.user.id !== null) {
+                window.axios
+                    .post(Vue.route('editors.me'), {
+                        id: state.user.id,
+                    })
+                    .then((response) => {})
+                    .catch(() => {})
+            }
         },
     },
     getters: {

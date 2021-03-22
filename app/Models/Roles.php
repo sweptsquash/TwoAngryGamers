@@ -48,6 +48,6 @@ class Roles extends Model
 
     public function editors()
     {
-        return $this->hasMany(Editors::class, 'id', 'id');
+        return $this->hasMany(Editors::class, 'role_id', 'id');
     }
 }

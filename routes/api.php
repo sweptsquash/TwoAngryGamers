@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\EditorController;
 use App\Http\Controllers\ScheduleController;
+use App\Http\Controllers\VideosController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,6 +25,13 @@ Route::middleware(['api', 'guest', 'throttle:20,1'])->group(function () {
     Route::get('/youtube', [ScheduleController::class, 'fetchYouTube'])->name('youtube');
 
     Route::prefix('editor')->name('editor.')->group(function () {
-        Route::get('/{id}', [EditorController::class, 'show'])->name('show');
+        Route::post('/', [EditorController::class, 'index'])->name('list');
+        Route::post('/me', [EditorController::class, 'me'])->name('me');
+        Route::post('/{id}', [EditorController::class, 'show'])->name('show');
+    });
+
+    Route::prefix('videos')->name('videos')->group(function () {
+        Route::post('/', [VideosController::class, 'index'])->name('list');
+        Route::post('/{id}', [VideosController::class, 'show'])->name('show');
     });
 });

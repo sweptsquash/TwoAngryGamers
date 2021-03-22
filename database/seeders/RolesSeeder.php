@@ -17,15 +17,15 @@ class RolesSeeder extends Seeder
         $roles = [
             [
                 'name'          => 'Admin',
-                'permissions'   => 'Add Users,List Users,Delete Users,Can Delete,Can Edit,Can Download',
+                'permissions'   => 'Create Editors,Edit Editors,List Editors,Delete Editors,List Videos,Edit Videos,Delete Videos,Can Download',
             ],
             [
                 'name'          => 'Editor',
-                'permissions'   => 'Can Edit,Can Download',
+                'permissions'   => 'List Videos,Edit Videos,Can Download',
             ],
             [
                 'name'          => 'User',
-                'permissions'   => 'Can Download',
+                'permissions'   => 'List Videos,Can Download',
             ],
         ];
 

@@ -53,12 +53,17 @@ class Editors extends Model
 
     public function permissions()
     {
-        $permissions = $this->hasOne(Roles::class, 'id', 'id');
+        return $this->hasOne(Roles::class, 'id', 'role_id');
+    }
 
-        if (empty($permissions)) {
-            return ['Can Download'];
+    public function hasPermission($permission = null)
+    {
+        if (! empty($permission)) {
+            $permissions = $this->permissions()->first();
+
+            return in_array($permission, explode(',', $permissions->permissions));
         }
 
-        return explode(',', $permissions->permissions);
+        return false;
     }
 }

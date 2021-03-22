@@ -13,6 +13,7 @@ config/secrets/prod/prod.decrypt.private.php
 /storage/*.key
 var/
 vendor/
+.vscode
 .DS_Store
 .env
 .env.backup
