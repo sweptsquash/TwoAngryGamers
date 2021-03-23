@@ -13,6 +13,7 @@ use App\Http\Resources\EditorResource;
 use App\Models\Editors;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Inertia\Inertia;
 
 class EditorController extends Controller
@@ -22,22 +23,11 @@ class EditorController extends Controller
      *
      * @param Request $request
      *
-     * @return JsonResponse|EditorCollectionResource
+     * @return EditorCollectionResource
      */
     public function index(ListEditorRequest $request)
     {
-        $uuid = $request->input('uuid');
-
-        $currentEditor = Editors::where('id', $uuid)->first();
-
-        if (! empty($currentEditor) && $currentEditor->hasPermission('List Editors')) {
-            return new EditorCollectionResource(Editors::paginate());
-        } else {
-            return new JsonResponse([
-                'status'    => 'error',
-                'message'   => 'Editor not found.',
-            ], 400);
-        }
+        return new EditorCollectionResource(Editors::paginate());
     }
 
     /**
@@ -46,30 +36,19 @@ class EditorController extends Controller
      * @param Request $request
      * @param string $id
      *
-     * @return JsonResponse|EditorResource
+     * @return EditorResource|JsonResponse
      */
     public function show(FetchEditorRequest $request, string $id)
     {
-        $uuid = $request->input('uuid');
+        try {
+            $editor = Editors::where('id', $id)->firstOrFail();
 
-        $currentEditor = Editors::where('id', $uuid)->first();
-
-        if (! empty($currentEditor)) {
-            $editor = Editors::where('id', $id)->first();
-
-            if (! empty($editor)) {
-                return new EditorResource($editor);
-            } else {
-                return new JsonResponse([
-                    'status'    => 'error',
-                    'message'   => 'Editor not found.',
-                ], 400);
-            }
-        } else {
+            return new EditorResource($editor);
+        } catch (\Exception $e) {
             return new JsonResponse([
                 'status'    => 'error',
-                'message'   => 'Current Editor not found.',
-            ], 400);
+                'message'   => 'Can not find the editor.',
+            ], Response::HTTP_NOT_FOUND);
         }
     }
 
@@ -78,7 +57,7 @@ class EditorController extends Controller
      *
      * @param Request $request
      *
-     * @return JsonResponse|EditorResource
+     * @return EditorResource
      */
     public function me(FetchEditorRequest $request)
     {
@@ -86,14 +65,7 @@ class EditorController extends Controller
 
         $editor = Editors::where('id', $uuid)->first();
 
-        if (! empty($editor)) {
-            return new EditorResource($editor);
-        } else {
-            return new JsonResponse([
-                'status'    => 'error',
-                'message'   => 'Editor not found.',
-            ], 400);
-        }
+        return new EditorResource($editor);
     }
 
     /**

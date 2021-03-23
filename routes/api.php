@@ -27,11 +27,16 @@ Route::middleware(['api', 'guest', 'throttle:20,1'])->group(function () {
     Route::prefix('editor')->name('editor.')->group(function () {
         Route::post('/', [EditorController::class, 'index'])->name('list');
         Route::post('/me', [EditorController::class, 'me'])->name('me');
+        Route::post('/create', [EditorController::class, 'create'])->name('create');
         Route::post('/{id}', [EditorController::class, 'show'])->name('show');
+        Route::put('/{id}/update', [EditorController::class, 'update'])->name('update');
+        Route::delete('/{id}/delete', [EditorController::class, 'delete'])->name('delete');
     });
 
     Route::prefix('videos')->name('videos')->group(function () {
         Route::post('/', [VideosController::class, 'index'])->name('list');
         Route::post('/{id}', [VideosController::class, 'show'])->name('show');
+        Route::put('/{id}/update', [VideosController::class, 'update'])->name('update');
+        Route::delete('/{id}/delete', [VideosController::class, 'delete'])->name('delete');
     });
 });

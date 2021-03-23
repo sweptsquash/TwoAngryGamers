@@ -78,6 +78,23 @@ class EditorControllerTest extends TestCase
     }
 
     /**
+     * Assert Not Found when ID is invalid
+     *
+     * @return void
+     */
+    public function testFetchEditorInvalidId()
+    {
+        $this->seed();
+
+        $this->post('/api/editor/5696', ['uuid' => 4928541])
+            ->assertStatus(404)
+            ->assertJsonStructure([
+                'status',
+                'message',
+            ]);
+    }
+
+    /**
      * Assert JSON Structure of Current Editors Resource
      *
      * @return void
