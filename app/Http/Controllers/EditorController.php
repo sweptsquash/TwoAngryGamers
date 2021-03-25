@@ -97,13 +97,12 @@ class EditorController extends Controller
     public function update($id, UpdateEditorRequest $request)
     {
         try {
-            Editors::where('id', $id)
-                ->update([
-                    'name'      => $request->input('name'),
-                    'role_id'   => $request->input('role_id'),
-                ]);
-
             $editor = Editors::where('id', $id)->firstOrFail();
+
+            $editor->update([
+                'name'      => $request->input('name'),
+                'role_id'   => $request->input('role_id'),
+            ]);
 
             return new EditorResource($editor);
         } catch (\Exception $e) {
@@ -126,6 +125,7 @@ class EditorController extends Controller
     {
         try {
             Editors::where('id', $id)
+                ->firstOrFail()
                 ->delete();
 
             return new JsonResponse([

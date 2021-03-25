@@ -59,13 +59,12 @@ class VideosController extends Controller
     public function update($id, UpdateVideosRequest $request)
     {
         try {
-            Videos::where('id', $id)
-                ->update([
-                    'title'     => $request->input('title'),
-                    'author'    => $request->input('author'),
-                ]);
-
             $video = Videos::where('id', $id)->firstOrFail();
+
+            $video->update([
+                'title'     => $request->input('title'),
+                'author'    => $request->input('author'),
+            ]);
 
             return new VideosResource($video);
         } catch (\Exception $e) {
@@ -86,7 +85,9 @@ class VideosController extends Controller
     public function delete($id, DeleteVideoRequest $request)
     {
         try {
-            Videos::where('id', $id)->delete();
+            Videos::where('id', $id)
+                ->firstOrFail()
+                ->delete();
 
             return new JsonResponse([
                 'status' => 'success',
