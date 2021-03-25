@@ -136,7 +136,25 @@ class VideosControllerTest extends TestCase
      */
     public function testUpdateVideo()
     {
-        // TODO
+        $this->seed();
+        $this->seedVideos();
+
+        $video = [
+            'uuid'  => 56964879,
+            'id'    => 1,
+            'title' => 'Test Title',
+            'author'=> 'SweptSquash',
+        ];
+
+        $this->put(route('videos.update', $video))
+            ->assertSuccessful()
+            ->assertJson([
+                'data'  => [
+                    'id'    => 1,
+                    'title' => $video['title'],
+                    'author'=> $video['author'],
+                ],
+            ]);
     }
 
     /**
@@ -146,6 +164,18 @@ class VideosControllerTest extends TestCase
      */
     public function testDeleteVideo()
     {
-        // TODO
+        $this->seed();
+        $this->seedVideos();
+
+        $video = [
+            'uuid'  => 56964879,
+            'id'    => 1,
+        ];
+
+        $this->delete(route('videos.delete', $video))
+            ->assertSuccessful()
+            ->assertJson([
+                'status' => 'success',
+            ]);
     }
 }

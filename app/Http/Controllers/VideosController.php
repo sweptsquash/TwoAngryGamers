@@ -56,9 +56,24 @@ class VideosController extends Controller
      *
      * @return void
      */
-    public function update(UpdateVideosRequest $request)
+    public function update($id, UpdateVideosRequest $request)
     {
-        // TODO: Update Method
+        try {
+            Videos::where('id', $id)
+                ->update([
+                    'title'     => $request->input('title'),
+                    'author'    => $request->input('author'),
+                ]);
+
+            $video = Videos::where('id', $id)->firstOrFail();
+
+            return new VideosResource($video);
+        } catch (\Exception $e) {
+            return new JsonResponse([
+                'status'    => 'error',
+                'message'   => 'Video not found.',
+            ], Response::HTTP_NOT_FOUND);
+        }
     }
 
     /**
@@ -68,8 +83,19 @@ class VideosController extends Controller
      *
      * @return void
      */
-    public function delete(DeleteVideoRequest $request)
+    public function delete($id, DeleteVideoRequest $request)
     {
-        // TODO: Delete Method
+        try {
+            Videos::where('id', $id)->delete();
+
+            return new JsonResponse([
+                'status' => 'success',
+            ], Response::HTTP_OK);
+        } catch (\Exception $e) {
+            return new JsonResponse([
+                'status'    => 'error',
+                'message'   => 'Video not found.',
+            ], Response::HTTP_NOT_FOUND);
+        }
     }
 }
