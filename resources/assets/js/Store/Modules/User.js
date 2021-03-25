@@ -23,7 +23,17 @@ export default {
             state.user = user
         },
         [USER_LOGOUT]: (state) => {
-            window.twitchAPI.defaults.headers.common['Authorization'] = null
+            let userData = localStorage.getItem('userToken')
+
+            if (userData !== undefined && userData !== null && userData !== '') {
+                userData = JSON.parse(userData)
+
+                window.axios.post(
+                    'https://id.twitch.tv/oauth2/revoke?client_id=5xrjahdm6fo4zkob8xl6to1hu0q8mci&token=' +
+                        userData.token,
+                    [],
+                )
+            }
 
             state.user = {
                 id: null,
@@ -48,16 +58,18 @@ export default {
                     window.twitchAPI.defaults.headers.common['Authorization'] =
                         'OAuth ' + userData.token
 
-                    window.twitchAPI
-                        .get('/')
+                    window.axios
+                        .get('https://id.twitch.tv/oauth2/validate', {
+                            headers: {
+                                ...window.axios.defaults.headers.common,
+                                Authorization: 'OAuth ' + userData.token,
+                            },
+                        })
                         .then((response) => {
-                            if (
-                                response.data.token.valid === true &&
-                                response.data.token.client_id === '5xrjahdm6fo4zkob8xl6to1hu0q8mci'
-                            ) {
+                            if (response.data.client_id === '5xrjahdm6fo4zkob8xl6to1hu0q8mci') {
                                 commit(USER_UPDATE, {
-                                    id: response.data.token.user_id,
-                                    name: response.data.token.user_name,
+                                    id: response.data.user_id,
+                                    name: response.data.login,
                                     isFollowing: false,
                                     isSubscribed: false,
                                     permissions: [],
@@ -111,10 +123,15 @@ export default {
         [USER_CHECK_ROLES]: ({ state, commit }) => {
             if (state.user.id !== null) {
                 window.axios
-                    .post(Vue.route('editors.me'), {
-                        id: state.user.id,
+                    .post('/editor/me', {
+                        uuid: state.user.id,
                     })
-                    .then((response) => {})
+                    .then((response) => {
+                        commit(USER_UPDATE, {
+                            ...state.user,
+                            permissions: response.data.data.role.permissions,
+                        })
+                    })
                     .catch(() => {})
             }
         },

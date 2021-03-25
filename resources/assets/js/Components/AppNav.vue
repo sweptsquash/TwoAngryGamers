@@ -33,6 +33,15 @@
                         <font-awesome-icon :icon="['fas', 'shopping-bag']" />
                         Merch
                     </b-nav-item>
+                    <li class="nav-item" v-if="isAuthorized && getUser.permissions.length > 0">
+                        <inertia-link
+                            :href="route('editor.index')"
+                            :class="{ 'nav-link': true, active: route().current('editor.index') }"
+                        >
+                            <font-awesome-icon :icon="['fas', 'video']" />
+                            Editor
+                        </inertia-link>
+                    </li>
                     <b-nav-form>
                         <b-button variant="outline-light" id="authUser" @click.prevent="authorize">
                             <font-awesome-icon :icon="['fab', 'twitch']" />
@@ -59,7 +68,7 @@ export default {
         }
     },
     computed: {
-        ...mapGetters(['isAuthorized']),
+        ...mapGetters(['isAuthorized', 'getUser']),
     },
     methods: {
         authorize() {

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EditorController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,3 +18,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->middleware('guest')->name('homepage');
 Route::get('/about', [HomeController::class, 'about'])->middleware('guest')->name('about');
 Route::get('/subperks', [HomeController::class, 'subperks'])->middleware('guest')->name('subperks');
+
+Route::prefix('editor')->name('editor.')->group(function () {
+    Route::get('/', [EditorController::class, 'editorIndex'])->name('index');
+    Route::get('/login', [EditorController::class, 'editorLogin'])->name('login');
+    Route::get('/denied', [EditorController::class, 'editorDenied'])->name('denied');
+});

@@ -17,7 +17,14 @@ import {
     faTwitter,
     faYoutube,
 } from '@fortawesome/free-brands-svg-icons'
-import { faComments, faEye, faInfo, faShoppingBag, faStar } from '@fortawesome/free-solid-svg-icons'
+import {
+    faComments,
+    faEye,
+    faInfo,
+    faShoppingBag,
+    faStar,
+    faVideo,
+} from '@fortawesome/free-solid-svg-icons'
 import store from '@/Store'
 require('@/bootstrap')
 import '../sass/app.scss'
@@ -34,6 +41,7 @@ library.add(
     faStar,
     faTwitch,
     faTwitter,
+    faVideo,
     faYoutube,
 )
 
