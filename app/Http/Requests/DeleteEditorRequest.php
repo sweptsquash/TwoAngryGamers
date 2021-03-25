@@ -26,7 +26,6 @@ class DeleteEditorRequest extends FormRequest
     {
         return [
             'uuid'      => ['required', 'integer'],
-            'id'        => ['required', 'integer'],
         ];
     }
 
@@ -34,7 +33,6 @@ class DeleteEditorRequest extends FormRequest
     {
         return [
             'uuid'      => 'Current Editors UUID is required.',
-            'id'        => 'Editors Twitch ID is a required field.',
         ];
     }
 }

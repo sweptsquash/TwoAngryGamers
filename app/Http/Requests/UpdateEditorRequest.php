@@ -26,7 +26,6 @@ class UpdateEditorRequest extends FormRequest
     {
         return [
             'uuid'      => ['required', 'integer'],
-            'id'        => ['required', 'integer'],
             'name'      => ['required', 'string'],
             'role_id'   => ['required', 'integer'],
         ];
@@ -36,7 +35,6 @@ class UpdateEditorRequest extends FormRequest
     {
         return [
             'uuid'      => 'Current Editors UUID is required.',
-            'id'        => 'Editors Twitch ID is a required field.',
             'name'      => 'Editors Twitch Name is a required field.',
             'role_id'   => 'Editors Role is a required value.',
         ];

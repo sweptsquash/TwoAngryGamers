@@ -75,33 +75,68 @@ class EditorController extends Controller
      *
      * @return void
      */
-    public function create(CreateEditorRequest $request)
+    public function store(CreateEditorRequest $request)
     {
-        // TODO: Create method
+        $editor = Editors::factory()->create([
+            'id'        => $request->input('id'),
+            'name'      => $request->input('name'),
+            'role_id'   => $request->input('role_id'),
+        ]);
+
+        return new EditorResource($editor);
     }
 
     /**
      * Update An Existing Editor
      *
+     * @param string $id
      * @param UpdateEditorRequest $request
      *
      * @return void
      */
-    public function update(UpdateEditorRequest $request)
+    public function update($id, UpdateEditorRequest $request)
     {
-        // TODO: Update Method
+        try {
+            Editors::where('id', $id)
+                ->update([
+                    'name'      => $request->input('name'),
+                    'role_id'   => $request->input('role_id'),
+                ]);
+
+            $editor = Editors::where('id', $id)->firstOrFail();
+
+            return new EditorResource($editor);
+        } catch (\Exception $e) {
+            return new JsonResponse([
+                'status'    => 'error',
+                'message'   => 'Can not find the editor.',
+            ], Response::HTTP_NOT_FOUND);
+        }
     }
 
     /**
      * Delete An Existing Editor
      *
+     * @param string $id
      * @param DeleteEditorRequest $request
      *
      * @return void
      */
-    public function delete(DeleteEditorRequest $request)
+    public function delete($id, DeleteEditorRequest $request)
     {
-        // TODO: Delete Method
+        try {
+            Editors::where('id', $id)
+                ->delete();
+
+            return new JsonResponse([
+                'status' => 'success',
+            ], Response::HTTP_OK);
+        } catch (\Exception $e) {
+            return new JsonResponse([
+                'status'    => 'error',
+                'message'   => 'Can not find the editor.',
+            ], Response::HTTP_NOT_FOUND);
+        }
     }
 
     /**

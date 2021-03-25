@@ -26,7 +26,6 @@ class UpdateVideosRequest extends FormRequest
     {
         return [
             'uuid'      => ['required', 'integer'],
-            'id'        => ['required', 'integer'],
             'title'     => ['required', 'string'],
             'author'    => ['required', 'string'],
         ];
@@ -36,7 +35,6 @@ class UpdateVideosRequest extends FormRequest
     {
         return [
             'uuid'      => 'Current Editors UUID is required.',
-            'id'        => 'Video ID is required.',
             'title'     => 'Video Title is required.',
             'author'    => 'Video Author is required.',
         ];

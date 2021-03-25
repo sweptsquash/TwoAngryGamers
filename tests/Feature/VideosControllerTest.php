@@ -58,7 +58,7 @@ class VideosControllerTest extends TestCase
         $this->seed();
         $this->seedVideos();
 
-        $this->post('/api/videos', ['uuid' => 4928541])
+        $this->post(route('videos.list', ['uuid' => 56964879]))
             ->assertStatus(200)
             ->assertJsonStructure([
                 'data' => [
@@ -84,7 +84,7 @@ class VideosControllerTest extends TestCase
         $this->seed();
         $this->seedVideos();
 
-        $this->post('/api/videos', [])
+        $this->post(route('videos.list', []))
             ->assertStatus(403);
     }
 
@@ -93,12 +93,15 @@ class VideosControllerTest extends TestCase
      *
      * @return void
      */
-    public function testShowVideo()
+    public function testShowVideos()
     {
         $this->seed();
         $this->seedVideos();
 
-        $this->post('/api/videos/1', ['uuid' => 4928541])
+        $this->post(route('videos.show', [
+            'uuid' => 56964879,
+            'id' => 1,
+        ]))
             ->assertStatus(200)
             ->assertJsonStructure([
                 'data'  => [
@@ -122,7 +125,27 @@ class VideosControllerTest extends TestCase
         $this->seed();
         $this->seedVideos();
 
-        $this->post('/api/videos/1', [])
+        $this->post(route('videos.show', ['id' => 1]))
             ->assertStatus(403);
+    }
+
+    /**
+     * Assert Success on Video Update
+     *
+     * @return void
+     */
+    public function testUpdateVideo()
+    {
+        // TODO
+    }
+
+    /**
+     * Assert Success on Video Deletion
+     *
+     * @return void
+     */
+    public function testDeleteVideo()
+    {
+        // TODO
     }
 }

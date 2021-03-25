@@ -26,7 +26,6 @@ class DeleteVideoRequest extends FormRequest
     {
         return [
             'uuid'      => ['required', 'integer'],
-            'id'        => ['required', 'integer'],
         ];
     }
 
@@ -34,7 +33,6 @@ class DeleteVideoRequest extends FormRequest
     {
         return [
             'uuid'      => 'Current Editors UUID is required.',
-            'id'        => 'Videos ID is required.',
         ];
     }
 }

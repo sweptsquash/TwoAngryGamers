@@ -18,14 +18,14 @@ class EditorControllerTest extends TestCase
     {
         $this->seed();
 
-        $this->post('/api/editor', ['uuid' => 4928541])
+        $this->post(route('editor.list', ['uuid' => 56964879]))
             ->assertStatus(200)
             ->assertJsonStructure([
                 'data' => [
                     '*' => [
                         'id',
                         'name',
-                        'permissions',
+                        'role',
                     ],
                 ],
             ]);
@@ -40,7 +40,7 @@ class EditorControllerTest extends TestCase
     {
         $this->seed();
 
-        $this->post('/api/editor', [])
+        $this->post(route('editor.list', []))
             ->assertStatus(403);
     }
 
@@ -53,13 +53,16 @@ class EditorControllerTest extends TestCase
     {
         $this->seed();
 
-        $this->post('/api/editor/56964879', ['uuid' => 4928541])
+        $this->post(route('editor.show', [
+            'uuid' => 56964879,
+            'id' => 4928541,
+        ]))
             ->assertStatus(200)
             ->assertJsonStructure([
                 'data' => [
                     'id',
                     'name',
-                    'permissions',
+                    'role',
                 ],
             ]);
     }
@@ -73,7 +76,7 @@ class EditorControllerTest extends TestCase
     {
         $this->seed();
 
-        $this->post('/api/editor/56964879', [])
+        $this->post(route('editor.show', ['id' => 4928541]))
             ->assertStatus(403);
     }
 
@@ -86,7 +89,10 @@ class EditorControllerTest extends TestCase
     {
         $this->seed();
 
-        $this->post('/api/editor/5696', ['uuid' => 4928541])
+        $this->post(route('editor.show', [
+            'uuid'  => 56964879,
+            'id'    => 4928,
+        ]))
             ->assertStatus(404)
             ->assertJsonStructure([
                 'status',
@@ -103,13 +109,13 @@ class EditorControllerTest extends TestCase
     {
         $this->seed();
 
-        $this->post('/api/editor/me', ['uuid' => 4928541])
+        $this->post(route('editor.me', ['uuid' => 56964879]))
             ->assertStatus(200)
             ->assertJsonStructure([
                 'data' => [
                     'id',
                     'name',
-                    'permissions',
+                    'role',
                 ],
             ]);
     }
@@ -123,7 +129,94 @@ class EditorControllerTest extends TestCase
     {
         $this->seed();
 
-        $this->post('/api/editor/me', [])
+        $this->post(route('editor.me', []))
             ->assertStatus(403);
+    }
+
+    /**
+     * Asssert Created on new Editor
+     *
+     * @return void
+     */
+    public function testCreateEditor()
+    {
+        $this->seed();
+        $editor = [
+            'uuid'      => 56964879,
+            'id'        => 43242267,
+            'name'      => 'Senshudo',
+            'role_id'   => 2,
+        ];
+
+        $this->post(route('editor.store', $editor))
+            ->assertCreated()
+            ->assertJson([
+                'data'  => [
+                    'id'        => $editor['id'],
+                    'name'      => $editor['name'],
+                    'role'      => [
+                        'name'          =>  'Editor',
+                        'permissions'   =>  [
+                            'List Videos',
+                            'Edit Videos',
+                            'Can Download',
+                        ],
+                    ],
+                ],
+            ]);
+    }
+
+    /**
+     * Assert Success on Editor Update
+     *
+     * @return void
+     */
+    public function testUpdateEditor()
+    {
+        $this->seed();
+
+        $editor = [
+            'uuid'      => 56964879,
+            'id'        => 4928541,
+            'name'      => 'SweptSquash2',
+            'role_id'   => 3,
+        ];
+
+        $this->put(route('editor.update', $editor))
+            ->assertSuccessful()
+            ->assertJson([
+                'data'  => [
+                    'id'    => $editor['id'],
+                    'name'  => $editor['name'],
+                    'role'  => [
+                        'name'          => 'User',
+                        'permissions'   => [
+                            'List Videos',
+                            'Can Download',
+                        ],
+                    ],
+                ],
+            ]);
+    }
+
+    /**
+     * Assert Success on Editor Deletion
+     *
+     * @return void
+     */
+    public function testDeleteEditor()
+    {
+        $this->seed();
+
+        $editor = [
+            'uuid'      => 56964879,
+            'id'        => 4928541,
+        ];
+
+        $this->delete(route('editor.delete', $editor))
+            ->assertSuccessful()
+            ->assertJson([
+                'status' => 'success',
+            ]);
     }
 }
