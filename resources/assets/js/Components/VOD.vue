@@ -1,10 +1,27 @@
 <template>
     <div :class="{ 'd-none': !visible }" :id="`VOD-${service}`">
-        <b-row>
-            <b-alert variant="danger" class="text-center flex-fill" :show="empty">
+        <b-row class="my-3">
+            <b-col :cols="12" class="text-center" v-if="loading">
+                <div class="lds-roller mb-2">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+                <p>Loading Videos...</p>
+            </b-col>
+            <b-alert
+                variant="danger"
+                class="text-center flex-fill"
+                :show="!loading && videos.length === 0"
+            >
                 No Videos Found.
             </b-alert>
-            <template v-if="!empty">
+            <template v-if="videos.length > 0 && !loading">
                 <VideoCard
                     v-for="(vod, index) in videos"
                     :key="`VOD-${service}-${index}`"
@@ -17,7 +34,7 @@
             </template>
         </b-row>
         <Paginate
-            v-if="!empty && totalVODs > 21"
+            v-if="totalVODs > 21"
             :isTwitch="isTwitch || isTwitchHighlights"
             :pageSize="21"
             :totalItems="totalVODs"
@@ -54,7 +71,7 @@ export default {
     data() {
         return {
             service: 'twitch',
-            empty: true,
+            loading: true,
             videos: [],
             totalVODs: 0,
         }
@@ -67,6 +84,12 @@ export default {
             this.fetchVODs(page)
         },
         fetchVODs: function (offset = 0) {
+            this.loading = true
+
+            if (this.videos.length > 0) {
+                this.videos = []
+            }
+
             if (this.isTwitch || this.isTwitchHighlights) {
                 let requestUrl =
                     '/channels/56964879/videos?limit=21&period=all&sort=time&broadcast_type='
@@ -83,15 +106,9 @@ export default {
                     requestUrl += '&offset=' + offset
                 }
 
-                if (this.videos.length > 0) {
-                    this.videos = []
-                }
-
                 window.twitchAPI
                     .get(requestUrl)
                     .then((response) => {
-                        this.empty = false
-
                         this.totalVODs = parseInt(response.data._total)
 
                         response.data.videos.forEach((vod) => {
@@ -120,8 +137,9 @@ export default {
                             })
                         })
                     })
-                    .catch(() => {
-                        this.empty = true
+                    .catch(() => {})
+                    .then(() => {
+                        this.loading = false
                     })
             } else if (this.isYoutube) {
                 this.service = 'youtube'
@@ -129,8 +147,6 @@ export default {
                 window.axios
                     .get('/youtube')
                     .then((response) => {
-                        this.empty = false
-
                         response.data.videos.forEach((vod) => {
                             this.videos.push({
                                 id: vod.id,
@@ -143,8 +159,9 @@ export default {
 
                         this.totalVODs = response.data.videos.length
                     })
-                    .catch(() => {
-                        this.empty = true
+                    .catch(() => {})
+                    .then(() => {
+                        this.loading = false
                     })
             }
         },

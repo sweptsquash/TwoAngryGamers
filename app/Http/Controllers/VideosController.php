@@ -90,6 +90,8 @@ class VideosController extends Controller
                 ->firstOrFail()
                 ->delete();
 
+            // TODO: Delete Video & Thumbnail
+
             return new JsonResponse([
                 'status' => 'success',
             ], Response::HTTP_OK);
@@ -115,7 +117,7 @@ class VideosController extends Controller
                 ->firstOrFail();
 
             return response()->file(
-                base_path() . '/media/thumbnails/' . $video->thumbnail,
+                base_path() . '/public_html/images/thumbnails/' . $video->thumbnail,
                 ['Content-Type' => 'image/jpeg']
             );
         } catch (\Exception $e) {

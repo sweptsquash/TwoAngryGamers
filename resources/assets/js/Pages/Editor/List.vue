@@ -133,11 +133,11 @@ export default {
                             video: '/api/videos/' + video.id + '/download',
                         })
                     })
-
-                    this.loading = false
                 })
                 .catch(() => {
                     this.totalVideos = 0
+                })
+                .then(() => {
                     this.loading = false
                 })
         },

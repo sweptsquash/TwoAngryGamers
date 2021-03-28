@@ -2,7 +2,7 @@
     <b-row>
         <b-col>
             <nav aria-label="Page Navigation">
-                <ul class="pagination justify-content-center mt-3">
+                <ul class="pagination justify-content-center">
                     <li class="page-item" v-if="page.current > page.min">
                         <a
                             class="page-link"

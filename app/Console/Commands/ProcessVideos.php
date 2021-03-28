@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use App\Models\Videos;
 use Carbon\Carbon;
-use FFMpeg\FFMpeg;
 use Illuminate\Console\Command;
 use Str;
 
@@ -31,7 +30,7 @@ class ProcessVideos extends Command
      */
     public function handle()
     {
-        $mediaDir = base_path() . '/media' . '/videos/';
+        $mediaDir = base_path() . '/media/videos/';
         $thumbnailDir = base_path() . '/public_html/images/thumbnails/';
         $videoFiles = scandir($mediaDir);
         $videoFiles = array_slice($videoFiles, 2, count($videoFiles));
