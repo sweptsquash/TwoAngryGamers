@@ -19,6 +19,7 @@ class CreateVideos extends Migration
             $table->string('author');
             $table->string('filename');
             $table->timestamp('created');
+            $table->integer('duration');
             $table->string('thumbnail');
             $table->timestamps();
         });

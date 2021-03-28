@@ -19,8 +19,10 @@ import {
 } from '@fortawesome/free-brands-svg-icons'
 import {
     faComments,
+    faDownload,
     faEye,
     faInfo,
+    faPlus,
     faShoppingBag,
     faStar,
     faVideo,
@@ -32,11 +34,13 @@ import '../sass/app.scss'
 library.add(
     faComments,
     faDiscord,
+    faDownload,
     faEye,
     faFacebookF,
     faGithub,
     faInfo,
     faInstagram,
+    faPlus,
     faShoppingBag,
     faStar,
     faTwitch,

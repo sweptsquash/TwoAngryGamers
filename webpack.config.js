@@ -34,7 +34,7 @@ module.exports = {
                 path.resolve(__dirname, 'public_html/css'),
                 path.resolve(__dirname, 'public_html/js'),
                 path.resolve(__dirname, 'public_html/fonts'),
-                path.resolve(__dirname, 'public_html/images'),
+                path.resolve(__dirname, 'public_html/images/*.*'),
             ],
         }),
         new VueLoaderPlugin(),

@@ -27,6 +27,7 @@ class VideosFactory extends Factory
             'author'        => $this->faker->firstName(),
             'filename'      => 'example.mp4',
             'created'       => Carbon::now(),
+            'duration'      => 30,
             'thumbnail'     => 'example.jpg',
         ];
     }

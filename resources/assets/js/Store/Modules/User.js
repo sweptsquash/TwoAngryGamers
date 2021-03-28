@@ -68,7 +68,7 @@ export default {
                         .then((response) => {
                             if (response.data.client_id === '5xrjahdm6fo4zkob8xl6to1hu0q8mci') {
                                 commit(USER_UPDATE, {
-                                    id: response.data.user_id,
+                                    id: parseInt(response.data.user_id),
                                     name: response.data.login,
                                     isFollowing: false,
                                     isSubscribed: false,

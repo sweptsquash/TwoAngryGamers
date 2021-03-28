@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Videos;
 use Carbon\Carbon;
+use FFMpeg\FFMpeg;
 use Illuminate\Console\Command;
 use Str;
 
@@ -30,9 +31,9 @@ class ProcessVideos extends Command
      */
     public function handle()
     {
-        $mediaDir = base_path() . '/media';
-        $thumbnailDir = $mediaDir . '/thumbnails/';
-        $videoFiles = scandir($mediaDir . '/videos');
+        $mediaDir = base_path() . '/media' . '/videos/';
+        $thumbnailDir = base_path() . '/public_html/images/thumbnails/';
+        $videoFiles = scandir($mediaDir);
         $videoFiles = array_slice($videoFiles, 2, count($videoFiles));
 
         if (! empty($videoFiles)) {
@@ -51,23 +52,27 @@ class ProcessVideos extends Command
                     str_replace('_', '/', $dateTime[0]) . ' ' . str_replace('_', ':', $dateTime[1])
                 );
 
-                $videoEntry = Videos::where('title', '=', $title)->where('created', '=', $dateTime)->first();
+                $videoEntry = Videos::where('title', $title)->where('created', $dateTime)->first();
 
                 if (! $videoEntry) {
                     $thumbnailName = Str::slug($title . $dateTime->toDateTimeString() . '-thumbnail') . '.jpg';
 
                     if (! file_exists($thumbnailDir . $thumbnailName)) {
                         $ffmpeg = \FFMpeg\FFMpeg::create();
-                        $videoFile = $ffmpeg->open($mediaDir . '/videos/' . $video);
+                        $videoFile = $ffmpeg->open($mediaDir . $video);
                         $thumbnail = $videoFile->frame(\FFMpeg\Coordinate\TimeCode::fromSeconds(2));
                         $thumbnail->save($thumbnailDir . $thumbnailName);
                     }
+
+                    $ffprobe = \FFMpeg\FFProbe::create();
+                    $duration = number_format($ffprobe->format($mediaDir . $video)->get('duration'));
 
                     Videos::factory()->create([
                         'title'     => $title,
                         'author'    => $author,
                         'filename'  => $video,
                         'created'   => $dateTime,
+                        'duration'  => $duration,
                         'thumbnail' => $thumbnailName,
                     ]);
                 }

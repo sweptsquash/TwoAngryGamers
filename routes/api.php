@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['api', 'guest', 'throttle:20,1'])->group(function () {
+Route::middleware(['api', 'guest', 'throttle:60,1'])->group(function () {
     Route::prefix('schedule')->name('schedule.')->group(function () {
         Route::get('/', [ScheduleController::class, 'scheduleList'])->name('list');
         Route::get('/next', [ScheduleController::class, 'scheduleNext'])->name('next');
@@ -38,5 +38,7 @@ Route::middleware(['api', 'guest', 'throttle:20,1'])->group(function () {
         Route::post('/{id}', [VideosController::class, 'show'])->name('show');
         Route::put('/{id}/update', [VideosController::class, 'update'])->name('update');
         Route::delete('/{id}/delete', [VideosController::class, 'delete'])->name('delete');
+        Route::get('/{id}/thumbnail', [VideosController::class, 'thumbnail'])->name('thumbnail');
+        Route::get('/{id}/download', [VideosController::class, 'download'])->name('download');
     });
 });

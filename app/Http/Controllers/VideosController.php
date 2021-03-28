@@ -12,6 +12,7 @@ use App\Http\Resources\VideosResource;
 use App\Models\Videos;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Str;
 
 class VideosController extends Controller
 {
@@ -35,7 +36,7 @@ class VideosController extends Controller
      *
      * @return VideoResource|JsonResponse
      */
-    public function show(FetchVideosRequest $request, string $id)
+    public function show(string $id, FetchVideosRequest $request)
     {
         try {
             $video = Videos::where('id', $id)->firstOrFail();
@@ -98,5 +99,61 @@ class VideosController extends Controller
                 'message'   => 'Video not found.',
             ], Response::HTTP_NOT_FOUND);
         }
+    }
+
+    /**
+     * Fetch Thumbnail
+     *
+     * @param string $id
+     *
+     * @return Response|JsonResponse
+     */
+    public function thumbnail(string $id)
+    {
+        try {
+            $video = Videos::where('id', $id)
+                ->firstOrFail();
+
+            return response()->file(
+                base_path() . '/media/thumbnails/' . $video->thumbnail,
+                ['Content-Type' => 'image/jpeg']
+            );
+        } catch (\Exception $e) {
+            return new JsonResponse([
+                'status'    => 'error',
+                'message'   => 'Video not found.',
+            ], Response::HTTP_NOT_FOUND);
+        }
+    }
+
+    /**
+     * Download Video
+     *
+     * @param string $id
+     *
+     * @return Response|JsonResponse
+     */
+    public function download(string $id)
+    {
+        try {
+            $video = Videos::where('id', $id)
+                ->firstOrFail();
+
+            return response()->download(
+                base_path() . '/media/videos/' . $video->filename,
+                Str::slug($video->title . '-' . $video->created) . '.mp4',
+                ['Content-Type' => 'video/mp4']
+            );
+        } catch (\Exception $e) {
+            return new JsonResponse([
+                'status'    => 'error',
+                'message'   => 'Video not found.',
+            ], Response::HTTP_NOT_FOUND);
+        }
+    }
+
+    public function downloadCollection()
+    {
+        // TODO: Build ZIP download
     }
 }

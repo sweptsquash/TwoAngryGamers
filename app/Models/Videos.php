@@ -28,6 +28,7 @@ class Videos extends Model
         'author',
         'filename',
         'created',
+        'duration',
         'thumbnail',
     ];
 
@@ -49,6 +50,7 @@ class Videos extends Model
         'author'    => 'string',
         'filename'  => 'string',
         'created'   => 'datetime',
+        'duration'  => 'integer',
         'thumbnail' => 'string',
     ];
 
