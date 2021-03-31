@@ -34,16 +34,16 @@
                     <VOD :visible="VODService === 'YouTube'" :isYoutube="true" />
                 </b-col>
                 <b-col :xl="3">
-                    <div className="mb-3">
+                    <div class="mb-3">
                         <a
-                            className="twitter-timeline"
+                            class="twitter-timeline"
                             data-height="605"
                             href="https://twitter.com/2AngryGamers?ref_src=twsrc%5Etfw"
                         >
                             Tweets by 2AngryGamers
                         </a>
                     </div>
-                    <div className="mb-3">
+                    <div class="mb-3">
                         <iframe
                             src="https://discordapp.com/widget?id=107055937814016000&theme=dark"
                             width="262"
@@ -75,6 +75,17 @@ export default {
         return {
             VODService: 'Twitch',
             VODIcon: 'twitch',
+        }
+    },
+    mounted: function () {
+        let twitterJS = document.getElementById('twitterJS')
+
+        if (twitterJS === null) {
+            twitterJS = document.createElement('script')
+            twitterJS.setAttribute('src', 'https://platform.twitter.com/widgets.js')
+            twitterJS.setAttribute('id', 'twitterJS')
+            twitterJS.async = true
+            document.body.append(twitterJS)
         }
     },
     methods: {

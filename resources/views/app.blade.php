@@ -25,13 +25,13 @@
         <meta name="twitter:card" content="summary">
         <meta name="twitter:site" content="@2angrygamers" />
         <script type="application/ld+json">
-            { 
-                "@context": "http://schema.org", 
-                "@type": "Organization", 
+            {
+                "@context": "http://schema.org",
+                "@type": "Organization",
                 "name": "Two Angry Gamers",
                 "alternateName": "TwoAngryGamers",
-                "url": "https://www.twoangrygamers.tv/", 
-                "logo": "https://cdn.twoangrygamers.tv/images/banner_logo.png", 
+                "url": "https://www.twoangrygamers.tv/",
+                "logo": "https://cdn.twoangrygamers.tv/images/banner_logo.png",
                 "sameAs": [
                     "https://www.youtube.com/user/TwoAngryGamersTV/",
                     "https://www.twitter.com/2angrygamers/",
@@ -54,10 +54,9 @@
             (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
             m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
             })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-    
+
             ga('create', 'UA-47746245-4', 'auto');
             ga('send', 'pageview');
         </script>
-        <script type="text/javascript" async src="https://platform.twitter.com/widgets.js"></script>
     </body>
 </html>
