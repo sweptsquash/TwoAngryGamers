@@ -5,14 +5,16 @@
                 <h2>Editor Portal</h2>
             </b-col>
             <b-col :cols="6" class="text-right">
+                <b-button variant="primary" v-if="getBasket.length > 0" @click="downloadCollection">
+                    <font-awesome-icon :icon="['fas', 'download']" />
+                    Download Collection
+                </b-button>
                 <b-button
                     variant="primary"
-                    v-if="
-                        this.$store.getters.isAuthorized &&
-                        getUser.permissions.includes('List Editors')
-                    "
+                    v-if="isAuthorized && getUser.permissions.includes('List Editors')"
                     @click="toggleEditors"
                 >
+                    <font-awesome-icon :icon="['fas', 'users']" />
                     Manage Editors
                 </b-button>
             </b-col>
@@ -78,7 +80,7 @@ export default {
         }
     },
     computed: {
-        ...mapGetters(['isAuthorized', 'getUser']),
+        ...mapGetters(['isAuthorized', 'getUser', 'getBasket']),
     },
     watch: {
         getUser: {
@@ -103,9 +105,18 @@ export default {
             immediate: true,
         },
     },
+    mounted: function () {
+        if (
+            this.$store.getters.isAuthorized &&
+            this.$store.getters.getUser.permissions.length > 0
+        ) {
+            this.fetchVideos()
+        }
+    },
     methods: {
         handleView: function (id) {
             // TODO: Add Modal View
+            console.log(id)
         },
         handleClick: function (page) {
             this.fetchVideos(page)
@@ -143,6 +154,9 @@ export default {
         },
         toggleEditors: function () {
             // TODO: Toggle Editor Management Modal
+        },
+        downloadCollection: function () {
+            // TODO: Download ZIP of Videos
         },
     },
 }

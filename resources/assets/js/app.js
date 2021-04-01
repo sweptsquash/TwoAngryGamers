@@ -22,9 +22,11 @@ import {
     faDownload,
     faEye,
     faInfo,
+    faMinus,
     faPlus,
     faShoppingBag,
     faStar,
+    faUsers,
     faVideo,
 } from '@fortawesome/free-solid-svg-icons'
 import store from '@/Store'
@@ -40,11 +42,13 @@ library.add(
     faGithub,
     faInfo,
     faInstagram,
+    faMinus,
     faPlus,
     faShoppingBag,
     faStar,
     faTwitch,
     faTwitter,
+    faUsers,
     faVideo,
     faYoutube,
 )

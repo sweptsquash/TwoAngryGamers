@@ -193,6 +193,23 @@ h5,
         top: 10px;
         left: 10px;
     }
+
+    .rightBtn {
+        position: absolute;
+        border-radius: 0.25rem;
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 4px 8px;
+        color: #fff;
+        right: 10px;
+        top: 10px;
+        z-index: 2;
+        text-align: center;
+        width: 30px;
+
+        &:last-child {
+            top: 45px;
+        }
+    }
 }
 
 .header {
