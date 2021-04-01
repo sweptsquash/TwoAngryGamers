@@ -12,6 +12,7 @@ use App\Http\Resources\VideosResource;
 use App\Models\Videos;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Iman\Streamer\VideoStreamer;
 use Str;
 
 class VideosController extends Controller
@@ -157,5 +158,20 @@ class VideosController extends Controller
     public function downloadCollection()
     {
         // TODO: Build ZIP download
+    }
+
+    public function streamVideo(string $id)
+    {
+        try {
+            $video = Videos::where('id', $id)
+                ->firstOrFail();
+
+            return VideoStreamer::streamFile(base_path() . '/media/videos/' . $video->filename);
+        } catch (\Exception $e) {
+            return new JsonResponse([
+                'status'    => 'error',
+                'message'   => 'Video not found.',
+            ], Response::HTTP_NOT_FOUND);
+        }
     }
 }

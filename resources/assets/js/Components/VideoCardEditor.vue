@@ -8,10 +8,21 @@
         <div class="duration">
             {{ duration }}
         </div>
-        <div class="rightBtn" id="addToCollection" @click="handleAddToCollection">
+        <div
+            class="rightBtn"
+            id="addToCollection"
+            v-if="getUser.permissions.includes('Can Download')"
+            @click="handleAddToCollection"
+        >
             <font-awesome-icon :icon="['fas', isInBasket(VID) ? 'minus' : 'plus']" />
         </div>
-        <a class="rightBtn" :href="video" target="_blank" rel="noopener noreferrer">
+        <a
+            class="rightBtn"
+            :href="video"
+            target="_blank"
+            rel="noopener noreferrer"
+            v-if="getUser.permissions.includes('Can Download')"
+        >
             <font-awesome-icon :icon="['fas', 'download']" />
         </a>
     </div>
@@ -46,7 +57,7 @@ export default {
         },
     },
     computed: {
-        ...mapGetters(['isInBasket']),
+        ...mapGetters(['isInBasket', 'getUser']),
     },
     methods: {
         handleClick: function () {

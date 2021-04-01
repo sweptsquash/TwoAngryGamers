@@ -5,7 +5,11 @@
                 <h2>Editor Portal</h2>
             </b-col>
             <b-col :cols="6" class="text-right">
-                <b-button variant="primary" v-if="getBasket.length > 0" @click="downloadCollection">
+                <b-button
+                    variant="primary"
+                    v-if="getBasket.length > 0 && getUser.permissions.includes('Can Download')"
+                    @click="downloadCollection"
+                >
                     <font-awesome-icon :icon="['fas', 'download']" />
                     Download Collection
                 </b-button>
@@ -59,7 +63,64 @@
             :totalItems="totalVideos"
             @click="handleClick"
         />
-        <b-modal id="videoModal" v-model="showVideoModal">Hello World</b-modal>
+        <b-modal id="videoModal" size="lg" v-model="showVideoModal" :title="videoModal.title">
+            <b-embed
+                type="video"
+                aspect="16by9"
+                controls
+                :poster="`/images/thumbnails/${videoModal.thumbnail}`"
+            >
+                <source :src="`/api/videos/${videoModal.id}/stream`" type="video/mp4" />
+            </b-embed>
+
+            <table class="table table-bordered mt-4">
+                <tbody>
+                    <tr>
+                        <th scope="row">Created:</th>
+                        <td>{{ videoModal.created }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Author:</th>
+                        <td>{{ videoModal.author }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Duration:</th>
+                        <td>{{ videoModal.duration }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Filename:</th>
+                        <td>{{ videoModal.filename }}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <template #modal-footer>
+                <b-button
+                    variant="primary"
+                    v-if="getUser.permissions.includes('Can Download')"
+                    :href="`/api/videos/${videoModal.id}/download`"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Download
+                </b-button>
+                <b-button variant="danger" v-if="getUser.permissions.includes('Delete Videos')">
+                    Delete
+                </b-button>
+                <b-button variant="primary">Close</b-button>
+            </template>
+        </b-modal>
+
+        <b-modal
+            id="editorModal"
+            size="lg"
+            v-model="showEditorModal"
+            :title="modalTitle"
+            v-if="
+                getUser.permissions.includes('Create Editors') ||
+                getUser.permissions.includes('Edit Editors')
+            "
+        ></b-modal>
     </b-container>
 </template>
 
@@ -79,7 +140,17 @@ export default {
             videos: [],
             totalVideos: 0,
             showVideoModal: false,
-            videoModal: {},
+            showEditorModal: false,
+            modalTitle: 'Editors',
+            isEditting: false,
+            videoModal: {
+                id: 0,
+                title: null,
+                author: null,
+                created: null,
+                duration: null,
+                filename: null,
+            },
         }
     },
     computed: {
@@ -125,7 +196,11 @@ export default {
                     this.videoModal = response.data.data
                 })
                 .catch(() => {
-                    // TODO: Display Error
+                    this.$bvToast.toast('Failed to load video information, please try again.', {
+                        title: 'Error',
+                        variant: 'danger',
+                        solid: true,
+                    })
                 })
         },
         handleClick: function (page) {
@@ -163,7 +238,7 @@ export default {
                 })
         },
         toggleEditors: function () {
-            // TODO: Toggle Editor Management Modal
+            this.showEditorModal = !this.showEditorModal
         },
         downloadCollection: function () {
             // TODO: Download ZIP of Videos

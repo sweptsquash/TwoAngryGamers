@@ -13,6 +13,7 @@
         "fruitcake/laravel-cors": "^2.0.3",
         "google/apiclient": "^2.0",
         "guzzlehttp/guzzle": "^7.2.0",
+        "imanghafoori/laravel-video": "dev-master",
         "inertiajs/inertia-laravel": "^0.4.0",
         "juhlinus/depictr": "^1.0",
         "laravel/framework": "^8.17.1",
