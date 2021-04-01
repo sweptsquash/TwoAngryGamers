@@ -1,13 +1,10 @@
 <template>
-    <div class="VOD">
-        <div
-            class="thumbnail"
-            :style="`background-image: url(${thumbnail})`"
-            @click="handleClick"
-        ></div>
-        <div class="info" @click="handleClick">
+    <div class="VOD VODEditor">
+        <div class="thumbnail" :style="`background-image: url(${thumbnail})`"></div>
+        <div class="info">
             {{ title }}
         </div>
+        <div class="highlight" @click="handleClick"></div>
         <div class="duration">
             {{ duration }}
         </div>

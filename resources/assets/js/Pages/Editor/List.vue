@@ -59,6 +59,7 @@
             :totalItems="totalVideos"
             @click="handleClick"
         />
+        <b-modal id="videoModal" v-model="showVideoModal">Hello World</b-modal>
     </b-container>
 </template>
 
@@ -77,6 +78,8 @@ export default {
             loading: true,
             videos: [],
             totalVideos: 0,
+            showVideoModal: false,
+            videoModal: {},
         }
     },
     computed: {
@@ -115,8 +118,15 @@ export default {
     },
     methods: {
         handleView: function (id) {
-            // TODO: Add Modal View
-            console.log(id)
+            window.axios
+                .post(this.route('videos.show', { id: id }), { uuid: this.getUser.id })
+                .then((response) => {
+                    this.showVideoModal = true
+                    this.videoModal = response.data.data
+                })
+                .catch(() => {
+                    // TODO: Display Error
+                })
         },
         handleClick: function (page) {
             this.fetchVideos(page)
