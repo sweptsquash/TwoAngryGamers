@@ -41,5 +41,6 @@ Route::middleware(['api', 'guest', 'throttle:60,1'])->group(function () {
         Route::get('/{id}/thumbnail', [VideosController::class, 'thumbnail'])->name('thumbnail');
         Route::get('/{id}/download', [VideosController::class, 'download'])->name('download');
         Route::get('/{id}/stream', [VideosController::class, 'streamVideo'])->name('stream');
+        Route::get('/collection', [VideosController::class, 'downloadCollection'])->name('collection');
     });
 });

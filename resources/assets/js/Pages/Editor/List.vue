@@ -8,7 +8,7 @@
                 <b-button
                     variant="primary"
                     v-if="getBasket.length > 0 && getUser.permissions.includes('Can Download')"
-                    @click="downloadCollection"
+                    :href="this.route('videos.collection', { ids: this.getBasket.join() })"
                 >
                     <font-awesome-icon :icon="['fas', 'download']" />
                     Download Collection
@@ -102,12 +102,21 @@
                     target="_blank"
                     rel="noopener noreferrer"
                 >
+                    <font-awesome-icon :icon="['fas', 'download']" />
                     Download
                 </b-button>
-                <b-button variant="danger" v-if="getUser.permissions.includes('Delete Videos')">
+                <b-button
+                    variant="danger"
+                    v-if="getUser.permissions.includes('Delete Videos')"
+                    @click="deleteVideo(videoModal.id)"
+                >
+                    <font-awesome-icon :icon="['fas', 'trash']" />
                     Delete
                 </b-button>
-                <b-button variant="primary">Close</b-button>
+                <b-button variant="primary" @click="showVideoModal = false">
+                    <font-awesome-icon :icon="['fas', 'times']" />
+                    Close
+                </b-button>
             </template>
         </b-modal>
 
@@ -237,11 +246,24 @@ export default {
                     this.loading = false
                 })
         },
+        deleteVideo: function (id) {
+            if (confirm('Are you sure you want to delete this video?')) {
+                window.axios
+                    .delete(this.route('videos.delete', { id: id, uuid: this.getUser.id }))
+                    .then(() => {
+                        this.$inertia.visit(this.route(this.route().current()))
+                    })
+                    .catch(() => {
+                        this.$bvToast.toast('Failed to delete the video, please try again.', {
+                            title: 'Error',
+                            variant: 'danger',
+                            solid: true,
+                        })
+                    })
+            }
+        },
         toggleEditors: function () {
             this.showEditorModal = !this.showEditorModal
-        },
-        downloadCollection: function () {
-            // TODO: Download ZIP of Videos
         },
     },
 }

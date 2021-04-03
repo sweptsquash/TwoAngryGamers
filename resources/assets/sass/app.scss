@@ -217,8 +217,12 @@ h5,
         text-align: center;
         width: 30px;
 
-        &:last-child {
+        &.middle {
             top: 45px;
+        }
+
+        &.bottom {
+            top: 80px;
         }
     }
 }

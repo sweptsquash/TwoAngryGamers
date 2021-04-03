@@ -26,6 +26,8 @@ import {
     faPlus,
     faShoppingBag,
     faStar,
+    faTimes,
+    faTrash,
     faUsers,
     faVideo,
 } from '@fortawesome/free-solid-svg-icons'
@@ -46,6 +48,8 @@ library.add(
     faPlus,
     faShoppingBag,
     faStar,
+    faTimes,
+    faTrash,
     faTwitch,
     faTwitter,
     faUsers,

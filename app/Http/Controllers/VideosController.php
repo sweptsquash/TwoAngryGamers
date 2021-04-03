@@ -11,9 +11,11 @@ use App\Http\Resources\VideosCollectionResource;
 use App\Http\Resources\VideosResource;
 use App\Models\Videos;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Iman\Streamer\VideoStreamer;
 use Str;
+use ZipArchive;
 
 class VideosController extends Controller
 {
@@ -87,11 +89,13 @@ class VideosController extends Controller
     public function delete($id, DeleteVideoRequest $request)
     {
         try {
-            Videos::where('id', $id)
-                ->firstOrFail()
-                ->delete();
+            $video = Videos::where('id', $id)
+                ->firstOrFail();
 
-            // TODO: Delete Video & Thumbnail
+            unlink(base_path() . '/public_html/images/thumbnails/' . $video->thumbnail);
+            unlink(base_path() . '/media/videos/' . $video->filename);
+
+            $video->delete();
 
             return new JsonResponse([
                 'status' => 'success',
@@ -155,11 +159,66 @@ class VideosController extends Controller
         }
     }
 
-    public function downloadCollection()
+    /**
+     * Compress and Download Collection of Videos
+     *
+     * @return Response|JsonResponse
+     */
+    public function downloadCollection(Request $request)
     {
-        // TODO: Build ZIP download
+        try {
+            if ($request->has('ids')) {
+                $ids = explode(',', $request->ids);
+
+                $videos = Videos::whereIn('id', $ids)->get();
+
+                if ($videos->isNotEmpty()) {
+                    $videoFiles = [];
+                    $zipFile = 'TAG-Collection-' . date('Y-m-d-H-i-s') . '.zip';
+
+                    foreach ($videos as $video) {
+                        $videoFiles[] = $video->filename;
+                    }
+
+                    $zip = new ZipArchive;
+
+                    $zip->open(
+                        base_path() . '/media/tmp/' . $zipFile,
+                        ZipArchive::CREATE
+                    );
+
+                    foreach ($videoFiles as $file) {
+                        $zip->addFile(base_path() . '/media/videos/' . $file, $file);
+                    }
+
+                    $zip->close();
+
+                    return response()->download(
+                        base_path() . '/media/tmp/' . $zipFile,
+                        $zipFile,
+                        ['Content-Type' => 'application/zip']
+                    );
+                } else {
+                    throw new \Exception('Videos not found.');
+                }
+            } else {
+                throw new \Exception('No ids passed');
+            }
+        } catch (\Exception $e) {
+            return new JsonResponse([
+                'status'    => 'error',
+                'message'   => $e->getMessage(),
+            ], Response::HTTP_NOT_FOUND);
+        }
     }
 
+    /**
+     * Stream Video File
+     *
+     * @param string $id
+     *
+     * @return VideoStreamer|JsonResponse
+     */
     public function streamVideo(string $id)
     {
         try {
