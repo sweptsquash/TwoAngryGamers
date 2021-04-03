@@ -24,7 +24,13 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command('videos:process')
+            ->description('Process any unprocessed videos to be added to the database')
+            ->hourly();
+
+        $schedule->command('videos:cleanup')
+            ->description('Cleanup the collections tmp folder after 24 hours')
+            ->hourly();
     }
 
     /**
