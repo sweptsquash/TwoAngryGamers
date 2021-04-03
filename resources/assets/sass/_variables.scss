@@ -8,3 +8,23 @@ $border-radius: 0.35rem;
 $tag-orange: rgb(219, 94, 26);
 $tag-light: rgb(248, 247, 231);
 $primary: $tag-orange;
+
+// --- Toasts ---
+
+// Toaster defaults
+$b-toaster-zindex: 1100 !default;
+$b-toaster-offset-top: 0.5rem !default;
+$b-toaster-offset-bottom: $b-toaster-offset-top !default;
+$b-toaster-offset-left: $b-toaster-offset-top !default;
+$b-toaster-offset-right: $b-toaster-offset-top !default;
+
+// Default toast opacity
+// Value from 0 to 1, or 0% to 100%
+// Bootstrap default is 0.85 (extracted from the `$toast-background-color` value)
+// Bootstrap does not have this as a variable, so we add it in.
+$b-toast-background-opacity: alpha(rgba(255, 255, 255, 0.85)) !default;
+
+// Toast variant levels wrt theme color value
+$b-toast-bg-level: -10 !default;
+$b-toast-border-level: -9 !default;
+$b-toast-color-level: 6 !default;
