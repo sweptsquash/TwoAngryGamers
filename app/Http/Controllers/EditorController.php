@@ -7,10 +7,13 @@ use App\Http\Requests\CreateEditorRequest;
 use App\Http\Requests\DeleteEditorRequest;
 use App\Http\Requests\FetchEditorRequest;
 use App\Http\Requests\ListEditorRequest;
+use App\Http\Requests\ListEditorRolesRequest;
 use App\Http\Requests\UpdateEditorRequest;
 use App\Http\Resources\EditorCollectionResource;
 use App\Http\Resources\EditorResource;
+use App\Http\Resources\RoleCollectionResource;
 use App\Models\Editors;
+use App\Models\Roles;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -73,7 +76,7 @@ class EditorController extends Controller
      *
      * @param CreateEditorRequest $request
      *
-     * @return void
+     * @return EditorResource
      */
     public function store(CreateEditorRequest $request)
     {
@@ -92,7 +95,7 @@ class EditorController extends Controller
      * @param string $id
      * @param UpdateEditorRequest $request
      *
-     * @return void
+     * @return EditorResource|JsonResponse
      */
     public function update($id, UpdateEditorRequest $request)
     {
@@ -119,7 +122,7 @@ class EditorController extends Controller
      * @param string $id
      * @param DeleteEditorRequest $request
      *
-     * @return void
+     * @return JsonResponse
      */
     public function delete($id, DeleteEditorRequest $request)
     {
@@ -137,6 +140,18 @@ class EditorController extends Controller
                 'message'   => 'Can not find the editor.',
             ], Response::HTTP_NOT_FOUND);
         }
+    }
+
+    /**
+     * List All Editor Roles
+     *
+     * @param ListEditorRolesRequest $request
+     *
+     * @return RoleCollectionResource
+     */
+    public function roles(ListEditorRolesRequest $request)
+    {
+        return new RoleCollectionResource(Roles::all());
     }
 
     /**

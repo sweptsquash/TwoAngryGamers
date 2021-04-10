@@ -28,6 +28,7 @@ Route::middleware(['api', 'guest', 'throttle:60,1'])->group(function () {
         Route::post('/', [EditorController::class, 'index'])->name('list');
         Route::post('/me', [EditorController::class, 'me'])->name('me');
         Route::post('/store', [EditorController::class, 'store'])->name('store');
+        Route::post('/roles', [EditorController::class, 'roles'])->name('roles');
         Route::post('/{id}', [EditorController::class, 'show'])->name('show');
         Route::put('/{id}/update', [EditorController::class, 'update'])->name('update');
         Route::delete('/{id}/delete', [EditorController::class, 'delete'])->name('delete');

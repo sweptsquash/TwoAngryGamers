@@ -48,6 +48,15 @@ class VideosControllerTest extends TestCase
         }
     }
 
+    public function mockVideoFile()
+    {
+        $vid = fopen(base_path() . '/media/videos/[2016_06_03 15_35_55] The Wizard by EndersDane-DarkInventiveOstrichVoteYea.mp4', 'w');
+        fclose($vid);
+
+        $thumb = fopen(base_path() . '/public_html/images/thumbnails/the-wizard-2016-06-03-153555-thumbnail.jpg', 'w');
+        fclose($thumb);
+    }
+
     /**
      * Assert JSON Structure of Videos Collection Resource
      *
@@ -166,6 +175,7 @@ class VideosControllerTest extends TestCase
     {
         $this->seed();
         $this->seedVideos();
+        $this->mockVideoFile();
 
         $video = [
             'uuid'  => 56964879,

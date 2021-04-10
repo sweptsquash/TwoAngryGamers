@@ -13,14 +13,10 @@
                     <font-awesome-icon :icon="['fas', 'download']" />
                     Download Collection
                 </b-button>
-                <b-button
-                    variant="primary"
+
+                <ManageEditors
                     v-if="isAuthorized && getUser.permissions.includes('List Editors')"
-                    @click="toggleEditors"
-                >
-                    <font-awesome-icon :icon="['fas', 'users']" />
-                    Manage Editors
-                </b-button>
+                />
             </b-col>
         </b-row>
         <b-row class="mb-4">
@@ -61,7 +57,7 @@
             v-if="totalVideos > 15"
             :pageSize="15"
             :totalItems="totalVideos"
-            @click="handleClick"
+            @click="fetchVideos"
         />
         <b-modal id="videoModal" size="lg" v-model="showVideoModal" :title="videoModal.title">
             <b-embed
@@ -119,17 +115,6 @@
                 </b-button>
             </template>
         </b-modal>
-
-        <b-modal
-            id="editorModal"
-            size="lg"
-            v-model="showEditorModal"
-            :title="modalTitle"
-            v-if="
-                getUser.permissions.includes('Create Editors') ||
-                getUser.permissions.includes('Edit Editors')
-            "
-        ></b-modal>
     </b-container>
 </template>
 
@@ -138,20 +123,18 @@ import { mapGetters } from 'vuex'
 import Layout from '@/Shared/Layout'
 import Paginate from '@/Components/Paginate'
 import VideoCard from '@/Components/VideoCardEditor'
+import ManageEditors from '@/Pages/Editor/ManageEditors'
 
 export default {
     name: 'EditorList',
     layout: Layout,
-    components: { Paginate, VideoCard },
+    components: { ManageEditors, Paginate, VideoCard },
     data() {
         return {
             loading: true,
             videos: [],
             totalVideos: 0,
             showVideoModal: false,
-            showEditorModal: false,
-            modalTitle: 'Editors',
-            isEditting: false,
             videoModal: {
                 id: 0,
                 title: null,
@@ -211,9 +194,6 @@ export default {
                         solid: true,
                     })
                 })
-        },
-        handleClick: function (page) {
-            this.fetchVideos(page)
         },
         fetchVideos: function (offset = null) {
             if (this.videos.length > 0) {

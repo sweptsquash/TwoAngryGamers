@@ -219,4 +219,26 @@ class EditorControllerTest extends TestCase
                 'status' => 'success',
             ]);
     }
+
+    /**
+     * Assert List Roles
+     *
+     * @return void
+     */
+    public function testListRoles()
+    {
+        $this->seed();
+
+        $this->post(route('editor.roles'), ['uuid' => 56964879])
+            ->assertSuccessful()
+            ->assertJsonStructure([
+                'data'  => [
+                    '*' => [
+                        'id',
+                        'name',
+                        'permissions',
+                    ],
+                ],
+            ]);
+    }
 }
