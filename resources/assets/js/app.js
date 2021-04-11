@@ -28,6 +28,7 @@ import {
     faStar,
     faTimes,
     faTrash,
+    faUserEdit,
     faUsers,
     faVideo,
 } from '@fortawesome/free-solid-svg-icons'
@@ -53,6 +54,7 @@ library.add(
     faTwitch,
     faTwitter,
     faUsers,
+    faUserEdit,
     faVideo,
     faYoutube,
 )

@@ -1,14 +1,20 @@
 <template>
     <div>
-        <b-button variant="primary" @click="toggleEditors = true">
+        <b-button variant="primary" @click="toggleEditors">
             <font-awesome-icon :icon="['fas', 'users']" />
             Manage Editors
         </b-button>
 
-        <b-modal id="editorModal" size="lg" :v-model="toggleEditors" :title="modalTitle">
+        <b-modal id="editorModal" size="lg" v-model="showModal" title="Editors">
             <template v-if="!isAdding && !isEditing">
                 <div class="text-right mb-3">
-                    <b-button variant="primary" @click="toggleAdd">Add Editor</b-button>
+                    <b-button
+                        variant="primary"
+                        @click="toggleAdd"
+                        v-if="getUser.permissions.includes('Create Editors')"
+                    >
+                        Add Editor
+                    </b-button>
                 </div>
 
                 <table class="table table-bordered">
@@ -41,10 +47,33 @@
                         <template v-else>
                             <template v-if="editors.length > 0">
                                 <tr v-for="editor in editors" :key="`editor-${editor.id}`">
-                                    <td>{{ editor.name }}</td>
-                                    <td>{{ editor.role.name }}</td>
-                                    <td>{{ editor.created_at }}</td>
-                                    <td></td>
+                                    <td class="align-middle">{{ editor.name }}</td>
+                                    <td class="align-middle">{{ editor.role.name }}</td>
+                                    <td class="align-middle">
+                                        {{ getFormatedDate(editor.created, 'DD/MM/YYYY hh:mm') }}
+                                    </td>
+                                    <td class="text-center">
+                                        <b-button-group>
+                                            <b-button
+                                                variant="success"
+                                                title="Edit Editor"
+                                                v-if="getUser.permissions.includes('Edit Editors')"
+                                                @click="updateEditor(editor.id)"
+                                            >
+                                                <font-awesome-icon :icon="['fas', 'user-edit']" />
+                                            </b-button>
+                                            <b-button
+                                                variant="danger"
+                                                title="Delete Editor"
+                                                v-if="
+                                                    getUser.permissions.includes('Delete Editors')
+                                                "
+                                                @click="deleteEditor(editor.id, editor.name)"
+                                            >
+                                                <font-awesome-icon :icon="['fas', 'trash']" />
+                                            </b-button>
+                                        </b-button-group>
+                                    </td>
                                 </tr>
                             </template>
                             <template v-else>
@@ -77,7 +106,12 @@
                                         :state="editor.valid"
                                     />
                                     <b-input-group-append>
-                                        <b-button variant="outline-primary">Find User</b-button>
+                                        <b-button
+                                            variant="outline-primary"
+                                            @click.prevent="validateUser"
+                                        >
+                                            Find User
+                                        </b-button>
                                     </b-input-group-append>
                                 </b-input-group>
                                 <b-form-text id="username-help">
@@ -92,10 +126,11 @@
                                     v-model="editor.role"
                                     :options="roles"
                                 ></b-form-select>
-                                <p><strong>Permissions</strong></p>
-                                <ul>
+                                <p class="mt-2 mb-0"><strong>Permissions</strong></p>
+                                <ul class="mb-0">
                                     <li
-                                        v-for="(permission, index) in roles.permissions"
+                                        v-for="(permission, index) in roles[editor.role - 1]
+                                            .permissions"
                                         :key="`permission-${index}`"
                                     >
                                         {{ permission }}
@@ -107,6 +142,9 @@
                             <td colspan="2" class="text-center">
                                 <b-button variant="primary" @click.prevent="addEditor">
                                     Add Editor
+                                </b-button>
+                                <b-button variant="outline-primary" @click.prevent="listEditors">
+                                    Cancel
                                 </b-button>
                             </td>
                         </tr>
@@ -128,8 +166,7 @@ export default {
     components: { Paginate },
     data() {
         return {
-            modalTitle: 'Editors',
-            toggleEditors: false,
+            showModal: false,
             editors: [],
             editor: {
                 id: 0,
@@ -152,6 +189,9 @@ export default {
         this.fetchRoles()
     },
     methods: {
+        toggleEditors: function () {
+            this.showModal = true
+        },
         fetchEditors: function (offset = null) {
             if (this.editors.length > 0) {
                 this.editors = []
@@ -164,7 +204,7 @@ export default {
                 .then((response) => {
                     this.totalEditors = response.data.meta.total
 
-                    response.data.forEach((editor) => {
+                    response.data.data.forEach((editor) => {
                         this.editors.push(editor)
                     })
                 })
@@ -178,14 +218,20 @@ export default {
                     })
                 })
                 .then(() => {
-                    this.loading = false
+                    this.isLoading = false
                 })
         },
         fetchRoles: function () {
             window.axios
-                .get(this.route('editors.roles'), { uuid: this.getUser.id })
+                .post(this.route('editor.roles'), { uuid: this.getUser.id })
                 .then((response) => {
-                    this.roles = response.data
+                    response.data.data.forEach((role) => {
+                        this.roles.push({
+                            value: role.id,
+                            text: role.name,
+                            permissions: role.permissions,
+                        })
+                    })
                 })
                 .catch(() => {})
         },
@@ -216,10 +262,29 @@ export default {
                 })
             }
         },
-        updateEditor: function () {
+        updateEditor: function (id) {
             //
         },
-        findUser: function () {
+        deleteEditor: function (id, username) {
+            if (confirm('Are you sure you want to delete the editor "' + username + '"?')) {
+                window.axios
+                    .delete(this.route('editor.delete', { id: id, uuid: this.getUser.id }))
+                    .then(() => {
+                        this.$inertia.visit(this.route(this.route().current()))
+                    })
+                    .catch(() => {
+                        this.$bvToast.toast(
+                            'Failed to delete the editor "' + username + '", please try again.',
+                            {
+                                title: 'Error',
+                                variant: 'danger',
+                                solid: true,
+                            },
+                        )
+                    })
+            }
+        },
+        validateUser: function () {
             window.twitchAPI
                 .get('users?login=' + this.editor.username)
                 .then((response) => {
@@ -235,11 +300,27 @@ export default {
                         valid: false,
                         id: 0,
                     }
+
+                    this.$bvToast.toast('Twitch Username is not valid.', {
+                        title: 'Error',
+                        variant: 'danger',
+                        solid: true,
+                    })
                 })
         },
         toggleAdd: function () {
             this.isAdding = true
             this.isEditing = false
+        },
+        listEditors: function () {
+            this.isAdding = false
+            this.isEditing = false
+            this.editor = {
+                id: 0,
+                username: '',
+                role: 3,
+                valid: null,
+            }
         },
     },
 }
