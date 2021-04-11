@@ -37,4 +37,5 @@ echo "Waiting for POD & Container to start..."
 sleep 30
 
 # Install & Build Frontend
-cd $PROJECT_PATH && ./kube_exec.sh "composer install --no-interaction --optimize-autoloader"
+cd $PROJECT_PATH && composer install --no-interaction --optimize-autoloader
+cd $PROJECT_PATH && npm install && npm run dev

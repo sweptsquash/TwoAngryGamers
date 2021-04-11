@@ -17,7 +17,21 @@ import {
     faTwitter,
     faYoutube,
 } from '@fortawesome/free-brands-svg-icons'
-import { faComments, faEye, faInfo, faShoppingBag, faStar } from '@fortawesome/free-solid-svg-icons'
+import {
+    faComments,
+    faDownload,
+    faEye,
+    faInfo,
+    faMinus,
+    faPlus,
+    faShoppingBag,
+    faStar,
+    faTimes,
+    faTrash,
+    faUserEdit,
+    faUsers,
+    faVideo,
+} from '@fortawesome/free-solid-svg-icons'
 import store from '@/Store'
 require('@/bootstrap')
 import '../sass/app.scss'
@@ -25,15 +39,23 @@ import '../sass/app.scss'
 library.add(
     faComments,
     faDiscord,
+    faDownload,
     faEye,
     faFacebookF,
     faGithub,
     faInfo,
     faInstagram,
+    faMinus,
+    faPlus,
     faShoppingBag,
     faStar,
+    faTimes,
+    faTrash,
     faTwitch,
     faTwitter,
+    faUsers,
+    faUserEdit,
+    faVideo,
     faYoutube,
 )
 

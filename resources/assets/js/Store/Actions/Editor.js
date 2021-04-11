@@ -1,0 +1,3 @@
+export const EDITOR_CLEAR = 'EDITOR_CLEAR'
+export const EDITOR_UPDATE = 'EDITOR_UPDATE'
+export const EDITOR_REMOVE = 'EDITOR_REMOVE'

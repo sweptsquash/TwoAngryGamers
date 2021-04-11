@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\ApiController;
-use Facade\FlareClient\Api;
+use App\Http\Controllers\EditorController;
+use App\Http\Controllers\ScheduleController;
+use App\Http\Controllers\VideosController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,9 +16,32 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['api', 'guest', 'throttle:10,1'])->prefix('schedule')->name('schedule.')->group(function () {
-    Route::get('/', [ApiController::class, 'scheduleList'])->name('list');
-    Route::get('/next', [ApiController::class, 'scheduleNext'])->name('next');
-});
+Route::middleware(['api', 'guest', 'throttle:60,1'])->group(function () {
+    Route::prefix('schedule')->name('schedule.')->group(function () {
+        Route::get('/', [ScheduleController::class, 'scheduleList'])->name('list');
+        Route::get('/next', [ScheduleController::class, 'scheduleNext'])->name('next');
+    });
 
-Route::get('/youtube', [ApiController::class, 'fetchYouTube'])->name('youtube');
+    Route::get('/youtube', [ScheduleController::class, 'fetchYouTube'])->name('youtube');
+
+    Route::prefix('editor')->name('editor.')->group(function () {
+        Route::post('/', [EditorController::class, 'index'])->name('list');
+        Route::post('/me', [EditorController::class, 'me'])->name('me');
+        Route::post('/store', [EditorController::class, 'store'])->name('store');
+        Route::post('/roles', [EditorController::class, 'roles'])->name('roles');
+        Route::post('/{id}', [EditorController::class, 'show'])->name('show');
+        Route::put('/{id}/update', [EditorController::class, 'update'])->name('update');
+        Route::delete('/{id}/delete', [EditorController::class, 'delete'])->name('delete');
+    });
+
+    Route::prefix('videos')->name('videos.')->group(function () {
+        Route::post('/', [VideosController::class, 'index'])->name('list');
+        Route::post('/{id}', [VideosController::class, 'show'])->name('show');
+        Route::put('/{id}/update', [VideosController::class, 'update'])->name('update');
+        Route::delete('/{id}/delete', [VideosController::class, 'delete'])->name('delete');
+        Route::get('/{id}/thumbnail', [VideosController::class, 'thumbnail'])->name('thumbnail');
+        Route::get('/{id}/download', [VideosController::class, 'download'])->name('download');
+        Route::get('/{id}/stream', [VideosController::class, 'streamVideo'])->name('stream');
+        Route::get('/collection', [VideosController::class, 'downloadCollection'])->name('collection');
+    });
+});

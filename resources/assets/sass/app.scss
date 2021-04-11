@@ -1,6 +1,8 @@
-@import 'fonts';
 @import 'variables';
+@import 'mixins';
+@import 'fonts';
 @import '~bootstrap/scss/bootstrap.scss';
+@import '~bootstrap-vue/src/components/toast/';
 
 *,
 *::before,
@@ -17,6 +19,10 @@ html {
 #app {
     min-height: 100%;
     display: flex;
+}
+
+.modal-backdrop {
+    opacity: 0.5;
 }
 
 h1,
@@ -144,8 +150,10 @@ h5,
     text-decoration: none;
     position: relative;
     background-color: $tag-orange;
+    z-index: 0;
 
-    &::before {
+    &:not(.VODEditor)::before,
+    &.VODEditor > .highlight {
         position: absolute;
         top: 0;
         right: 0;
@@ -154,12 +162,14 @@ h5,
         content: '';
         display: none;
         background-color: rgba(255, 255, 255, 0.075);
+        z-index: 1;
     }
 
     &:hover {
         text-decoration: none;
 
-        &::before {
+        &:not(.VODEditor)::before,
+        &.VODEditor > .highlight {
             display: block;
         }
     }
@@ -169,6 +179,7 @@ h5,
         height: 150px;
         background-size: cover;
         background-repeat: no-repeat;
+        z-index: 2;
     }
 
     .info {
@@ -180,6 +191,7 @@ h5,
         color: rgb(255, 255, 255);
         font-size: 0.875rem;
         line-height: 19px;
+        z-index: 2;
     }
 
     .duration {
@@ -191,6 +203,28 @@ h5,
         font-size: 0.75rem;
         top: 10px;
         left: 10px;
+        z-index: 3;
+    }
+
+    .rightBtn {
+        position: absolute;
+        border-radius: 0.25rem;
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 4px 8px;
+        color: #fff;
+        right: 10px;
+        top: 10px;
+        z-index: 3;
+        text-align: center;
+        width: 30px;
+
+        &.middle {
+            top: 45px;
+        }
+
+        &.bottom {
+            top: 80px;
+        }
     }
 }
 
@@ -283,6 +317,102 @@ h5,
     }
 }
 
+.lds-roller {
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 80px;
+
+    & > div {
+        transition: all 0.3s ease-in !important;
+        animation: lds-roller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite !important;
+        transform-origin: 40px 40px;
+
+        &::after {
+            content: ' ';
+            display: block;
+            position: absolute;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background-color: $tag-orange;
+            margin: -4px 0 0 -4px;
+        }
+
+        &:nth-child(1) {
+            animation-delay: -0.036s !important;
+        }
+
+        &:nth-child(1)::after {
+            top: 63px;
+            left: 63px;
+        }
+
+        &:nth-child(2) {
+            animation-delay: -0.072s !important;
+        }
+
+        &:nth-child(2)::after {
+            top: 68px;
+            left: 56px;
+        }
+
+        &:nth-child(3) {
+            animation-delay: -0.108s !important;
+        }
+
+        &:nth-child(3)::after {
+            top: 71px;
+            left: 48px;
+        }
+
+        &:nth-child(4) {
+            animation-delay: -0.144s !important;
+        }
+
+        &:nth-child(4)::after {
+            top: 72px;
+            left: 40px;
+        }
+
+        &:nth-child(5) {
+            animation-delay: -0.18s !important;
+        }
+
+        &:nth-child(5)::after {
+            top: 71px;
+            left: 32px;
+        }
+
+        &:nth-child(6) {
+            animation-delay: -0.216s !important;
+        }
+
+        &:nth-child(6)::after {
+            top: 68px;
+            left: 24px;
+        }
+
+        &:nth-child(7) {
+            animation-delay: -0.252s !important;
+        }
+
+        &:nth-child(7)::after {
+            top: 63px;
+            left: 17px;
+        }
+
+        &:nth-child(8) {
+            animation-delay: -0.288s !important;
+        }
+
+        &:nth-child(8)::after {
+            top: 56px;
+            left: 12px;
+        }
+    }
+}
+
 .app--footer {
     background-color: $tag-orange;
     color: rgb(255, 255, 255);
@@ -370,5 +500,16 @@ h5,
 @media (max-width: 414px) {
     .VOD {
         flex-basis: calc(100% - 8px);
+    }
+}
+
+@include keyframes(lds-roller) {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
     }
 }

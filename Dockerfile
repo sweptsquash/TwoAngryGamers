@@ -1,8 +1,8 @@
 # syntax=docker/dockerfile:experimental
 
-FROM composer:2.0.9 as build
+FROM composer:latest as build
 
-FROM php:8.0.2-apache as base
+FROM php:8.0-apache as base
 ARG SSH_KEY
 
 RUN apt-get update && apt-get install -y \
@@ -14,6 +14,7 @@ RUN apt-get update && apt-get install -y \
     wget \
     make \
     unzip \
+    ffmpeg \
     dialog \
     locales \
     libtool \
@@ -58,9 +59,8 @@ RUN docker-php-ext-configure gd \
 RUN docker-php-ext-install gd
 RUN docker-php-ext-install pdo_mysql zip exif pcntl
 
-RUN cd /tmp
-RUN --mount=type=ssh,id=github git clone https://github.com/Imagick/imagick
-RUN cd imagick && \
+RUN --mount=type=ssh,id=github git clone https://github.com/Imagick/imagick /tmp/imagick
+RUN cd /tmp/imagick && \
     phpize && \
     ./configure && \
     make && \
@@ -78,6 +78,6 @@ EXPOSE 80
 EXPOSE 443
 
 FROM base
-RUN mkdir /var/www/twoangrygamers.test
+RUN mkdir -m 777 /var/www/twoangrygamers.test
 WORKDIR /var/www/twoangrygamers.test
 COPY --chown=www-data:www-data . .

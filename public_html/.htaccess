@@ -11,12 +11,12 @@
 	AddOutputFilterByType DEFLATE application/rss+xml
 	AddOutputFilterByType DEFLATE application/javascript
 	AddOutputFilterByType DEFLATE application/x-javascript
-	
+
 	# Deactivate compression for buggy browsers
 	BrowserMatch ^Mozilla/4 gzip-only-text/html
 	BrowserMatch ^Mozilla/4.0[678] no-gzip
 	BrowserMatch bMSIE !no-gzip !gzip-only-text/html
-	
+
 	# Set header information for proxies
 	Header append Vary User-Agent
 </IfModule>

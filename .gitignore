@@ -1,5 +1,6 @@
 config/secrets/prod/prod.decrypt.private.php
 /node_modules
+/media
 /public_html/hot
 /public_html/storage
 /public_html/css
@@ -12,6 +13,7 @@ config/secrets/prod/prod.decrypt.private.php
 /storage/*.key
 var/
 vendor/
+.vscode
 .DS_Store
 .env
 .env.backup

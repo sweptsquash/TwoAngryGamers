@@ -11,6 +11,7 @@ import {
     USER_UPDATE,
     USER_CHECK_SUBSCRIPTION,
     USER_CHECK_FOLLOWING,
+    USER_CHECK_ROLES,
     USER_LOGOUT,
 } from '@/Store/Actions/User'
 
@@ -57,19 +58,21 @@ export default {
                 window.twitchAPI.defaults.headers.common['Authorization'] =
                     'OAuth ' + hash.access_token
 
-                window.twitchAPI
-                    .get('/')
+                window.axios
+                    .get('https://id.twitch.tv/oauth2/validate', {
+                        headers: {
+                            ...window.axios.defaults.headers.common,
+                            Authorization: 'OAuth ' + hash.access_token,
+                        },
+                    })
                     .then((response) => {
-                        if (
-                            response.data.token.valid === true &&
-                            response.data.token.client_id === '5xrjahdm6fo4zkob8xl6to1hu0q8mci'
-                        ) {
-                            const expires = Vue.prototype.moment().add(1, 'hours').toDate()
+                        if (response.data.client_id === '5xrjahdm6fo4zkob8xl6to1hu0q8mci') {
+                            const expires = Vue.prototype.moment().add(24, 'hours').toDate()
 
                             const userData = {
                                 token: hash.access_token,
-                                id: parseInt(response.data.token.user_id),
-                                name: response.data.token.user_name,
+                                id: parseInt(response.data.user_id),
+                                name: response.data.login,
                                 expires: expires,
                             }
 
@@ -91,6 +94,7 @@ export default {
 
                             dispatch(USER_CHECK_FOLLOWING)
                             dispatch(USER_CHECK_SUBSCRIPTION)
+                            dispatch(USER_CHECK_ROLES)
                         } else {
                             commit(AUTH_ERROR, 'Failed to retrieve user details')
                         }
