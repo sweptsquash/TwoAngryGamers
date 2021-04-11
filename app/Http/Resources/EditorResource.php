@@ -17,7 +17,7 @@ class EditorResource extends JsonResource
         return [
             'id'     => $this->id,
             'name'   => $this->name,
-            'role'   => new PermissionsResource($this->permissions),
+            'role'   => new RoleResource($this->permissions),
             'created'=> $this->created_at,
         ];
     }

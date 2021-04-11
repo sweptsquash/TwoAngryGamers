@@ -30,7 +30,7 @@ class EditorController extends Controller
      */
     public function index(ListEditorRequest $request)
     {
-        return new EditorCollectionResource(Editors::paginate());
+        return new EditorCollectionResource(Editors::orderBy('created_at', 'asc')->paginate());
     }
 
     /**

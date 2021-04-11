@@ -58,7 +58,7 @@
                                                 variant="success"
                                                 title="Edit Editor"
                                                 v-if="getUser.permissions.includes('Edit Editors')"
-                                                @click="updateEditor(editor.id)"
+                                                @click="editEditor(editor)"
                                             >
                                                 <font-awesome-icon :icon="['fas', 'user-edit']" />
                                             </b-button>
@@ -92,7 +92,7 @@
                 />
             </template>
 
-            <form id="addEditor" v-if="isAdding">
+            <form id="editorForm" v-if="isAdding || isEditing">
                 <table class="table table-bordered">
                     <tbody>
                         <tr>
@@ -140,8 +140,8 @@
                         </tr>
                         <tr>
                             <td colspan="2" class="text-center">
-                                <b-button variant="primary" @click.prevent="addEditor">
-                                    Add Editor
+                                <b-button variant="primary" @click.prevent="processEditor">
+                                    {{ isAdding ? 'Add' : 'Update' }} Editor
                                 </b-button>
                                 <b-button variant="outline-primary" @click.prevent="listEditors">
                                     Cancel
@@ -187,6 +187,12 @@ export default {
     mounted: function () {
         this.fetchEditors()
         this.fetchRoles()
+
+        this.$root.$on('bv::modal::hidden', (bvEvent, modalId) => {
+            if (modalId === 'editorModal') {
+                this.listEditors()
+            }
+        })
     },
     methods: {
         toggleEditors: function () {
@@ -235,6 +241,13 @@ export default {
                 })
                 .catch(() => {})
         },
+        processEditor: function () {
+            if (this.isAdding) {
+                this.addEditor()
+            } else {
+                this.updateEditor()
+            }
+        },
         addEditor: function () {
             if (this.editor.valid) {
                 window.axios
@@ -262,8 +275,38 @@ export default {
                 })
             }
         },
-        updateEditor: function (id) {
-            //
+        editEditor: function (editor) {
+            this.isAdding = false
+            this.isEditing = true
+            this.editor = {
+                id: editor.id,
+                username: editor.name,
+                role: editor.role.id,
+                valid: true,
+            }
+        },
+        updateEditor: function () {
+            window.axios
+                .put(this.route('editor.update', { id: this.editor.id }), {
+                    uuid: this.getUser.id,
+                    name: this.editor.username,
+                    role_id: this.editor.role,
+                })
+                .then(() => {
+                    this.$inertia.visit(this.route(this.route().current()))
+                })
+                .catch(() => {
+                    this.$bvToast.toast(
+                        'Failed to update the editor "' +
+                            this.editor.username +
+                            '", please try again.',
+                        {
+                            title: 'Error',
+                            variant: 'danger',
+                            solid: true,
+                        },
+                    )
+                })
         },
         deleteEditor: function (id, username) {
             if (confirm('Are you sure you want to delete the editor "' + username + '"?')) {
