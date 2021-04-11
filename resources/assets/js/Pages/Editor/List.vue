@@ -165,7 +165,7 @@ export default {
                         }
                     }
                 } else {
-                    this.$inertia.visit(this.route('editor.login'))
+                    this.$inertia.visit(this.route('editor.denied'))
                 }
             },
             immediate: true,

@@ -155,16 +155,6 @@ class EditorController extends Controller
     }
 
     /**
-     * Editor Login Page
-     *
-     * @return \Inertia\Response
-     */
-    public function editorLogin()
-    {
-        return Inertia::render('Editor/Login');
-    }
-
-    /**
      * Deny Access to Editor Section
      *
      * @return \Inertia\Response

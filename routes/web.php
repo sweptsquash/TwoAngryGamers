@@ -21,6 +21,5 @@ Route::get('/subperks', [HomeController::class, 'subperks'])->middleware('guest'
 
 Route::prefix('editor')->name('editor.')->group(function () {
     Route::get('/', [EditorController::class, 'editorIndex'])->name('index');
-    Route::get('/login', [EditorController::class, 'editorLogin'])->name('login');
     Route::get('/denied', [EditorController::class, 'editorDenied'])->name('denied');
 });
