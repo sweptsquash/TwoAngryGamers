@@ -63,10 +63,6 @@
 export default {
     name: 'Paginate',
     props: {
-        currentPage: {
-            default: 1,
-            type: Number,
-        },
         pageSize: {
             default: 15,
             type: Number,
@@ -89,7 +85,7 @@ export default {
         return {
             page: {
                 total: 1,
-                current: this.currentPage,
+                current: 1,
                 min: 1,
                 max: 1,
                 range: [],
@@ -124,15 +120,15 @@ export default {
                 let maxPagesBeforeCurrentPage = Math.floor(this.maxPages / 2),
                     maxPagesAfterCurrentPage = Math.ceil(this.maxPages / 2) - 1
 
-                if (this.currentPage <= maxPagesBeforeCurrentPage) {
+                if (this.page.current <= maxPagesBeforeCurrentPage) {
                     this.page.min = 1
                     this.page.max = this.maxPages
-                } else if (this.currentPage + maxPagesAfterCurrentPage >= this.page.total) {
+                } else if (this.page.current + maxPagesAfterCurrentPage >= this.page.total) {
                     this.page.min = this.page.total - this.maxPages + 1
                     this.page.max = this.maxPages
                 } else {
-                    this.page.min = this.currentPage - maxPagesBeforeCurrentPage
-                    this.page.max = this.currentPage + maxPagesAfterCurrentPage
+                    this.page.min = this.page.current - maxPagesBeforeCurrentPage
+                    this.page.max = this.page.current + maxPagesAfterCurrentPage
                 }
             }
 
