@@ -97,14 +97,15 @@ export default {
     },
     methods: {
         handleClick: function (page) {
-            this.page.current = page
+            this.calcPagination(page)
 
             this.$emit(
                 'click',
                 this.isTwitch ? (page === 1 ? 0 : this.pageSize * (page - 1)) : page,
             )
         },
-        calcPagination: function () {
+        calcPagination: function (page = 1) {
+            this.page.current = page
             this.page.total = Math.ceil(this.totalItems / this.pageSize)
 
             if (this.page.current < 1) {
