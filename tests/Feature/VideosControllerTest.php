@@ -67,8 +67,35 @@ class VideosControllerTest extends TestCase
         $this->seed();
         $this->seedVideos();
 
-        $this->post(route('videos.list', ['uuid' => 56964879]))
+        $this->post(route('videos.list'), ['uuid' => 56964879])
             ->assertStatus(200)
+            ->assertJsonStructure([
+                'data' => [
+                    '*' => [
+                        'id',
+                        'title',
+                        'author',
+                        'created',
+                        'filename',
+                        'thumbnail',
+                    ],
+                ],
+            ]);
+    }
+
+    /**
+     * Assert JSON Structure of Filtered Videos Collection Resource
+     *
+     * @return void
+     */
+    public function testListVideosWithFilters()
+    {
+        $this->seed();
+        $this->seedVideos();
+
+        $this->post(route('videos.list', ['filter[created:after]' => '2016-06-03', 'filter[created:before]' => '2016-06-10']), ['uuid' => 56964879])
+            ->assertSuccessful()
+            ->assertJsonCount(3, 'data')
             ->assertJsonStructure([
                 'data' => [
                     '*' => [
@@ -136,34 +163,6 @@ class VideosControllerTest extends TestCase
 
         $this->post(route('videos.show', ['id' => 1]))
             ->assertStatus(403);
-    }
-
-    /**
-     * Assert Success on Video Update
-     *
-     * @return void
-     */
-    public function testUpdateVideo()
-    {
-        $this->seed();
-        $this->seedVideos();
-
-        $video = [
-            'uuid'  => 56964879,
-            'id'    => 1,
-            'title' => 'Test Title',
-            'author'=> 'SweptSquash',
-        ];
-
-        $this->put(route('videos.update', $video))
-            ->assertSuccessful()
-            ->assertJson([
-                'data'  => [
-                    'id'    => 1,
-                    'title' => $video['title'],
-                    'author'=> $video['author'],
-                ],
-            ]);
     }
 
     /**

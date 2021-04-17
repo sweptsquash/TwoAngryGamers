@@ -148,20 +148,24 @@ class EditorControllerTest extends TestCase
             'role_id'   => 2,
         ];
 
-        $this->post(route('editor.store', $editor))
-            ->assertCreated()
+        $response = $this->post(route('editor.store'), $editor);
+
+        $data = $response->decodeResponseJson();
+
+        $response->assertCreated()
             ->assertJson([
                 'data'  => [
                     'id'        => $editor['id'],
                     'name'      => $editor['name'],
                     'role'      => [
+                        'id'            =>  $editor['role_id'],
                         'name'          =>  'Editor',
                         'permissions'   =>  [
                             'List Videos',
-                            'Edit Videos',
                             'Can Download',
                         ],
                     ],
+                    'created'   => $data['data']['created'],
                 ],
             ]);
     }

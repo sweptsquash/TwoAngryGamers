@@ -18,9 +18,11 @@ import {
     faYoutube,
 } from '@fortawesome/free-brands-svg-icons'
 import {
+    faCalendar,
     faComments,
     faDownload,
     faEye,
+    faFilter,
     faInfo,
     faMinus,
     faPlus,
@@ -37,11 +39,13 @@ require('@/bootstrap')
 import '../sass/app.scss'
 
 library.add(
+    faCalendar,
     faComments,
     faDiscord,
     faDownload,
     faEye,
     faFacebookF,
+    faFilter,
     faGithub,
     faInfo,
     faInstagram,

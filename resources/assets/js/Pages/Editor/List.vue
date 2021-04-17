@@ -19,6 +19,62 @@
                 />
             </b-col>
         </b-row>
+        <b-row>
+            <b-col :cols="4">
+                <datepicker
+                    ref="fromDate"
+                    id="fromDate"
+                    name="fromDate"
+                    :format="dateFormat"
+                    v-model="dateRange.start"
+                    :bootstrap-styling="true"
+                    :typeable="true"
+                    :use-utc="true"
+                    :monday-first="true"
+                >
+                    <template slot="afterDateInput">
+                        <span class="input-group-append">
+                            <b-button variant="outline-primary" @click="showFromCalendar">
+                                <font-awesome-icon :icon="['fas', 'calendar']" />
+                            </b-button>
+                        </span>
+                    </template>
+                </datepicker>
+            </b-col>
+            <b-col :cols="4">
+                <datepicker
+                    ref="toDate"
+                    id="toDate"
+                    name="toDate"
+                    :format="dateFormat"
+                    v-model="dateRange.end"
+                    :bootstrap-styling="true"
+                    :typeable="true"
+                    :use-utc="true"
+                    :monday-first="true"
+                >
+                    <template slot="afterDateInput">
+                        <span class="input-group-append">
+                            <b-button variant="outline-primary" @click="showToCalendar">
+                                <font-awesome-icon :icon="['fas', 'calendar']" />
+                            </b-button>
+                        </span>
+                    </template>
+                </datepicker>
+            </b-col>
+            <b-col :cols="4">
+                <b-button-group class="w-100">
+                    <b-button variant="primary" @click="applyFilter">
+                        <font-awesome-icon :icon="['fas', 'filter']" />
+                        Filter
+                    </b-button>
+                    <b-button variant="danger" @click="resetFilter">
+                        <font-awesome-icon :icon="['fas', 'times']" />
+                        Reset
+                    </b-button>
+                </b-button-group>
+            </b-col>
+        </b-row>
         <b-row class="mb-4">
             <b-col :cols="12" class="text-center" v-if="loading">
                 <div class="lds-roller mb-2">
@@ -35,7 +91,7 @@
             </b-col>
             <b-alert
                 variant="danger"
-                class="text-center flex-fill"
+                class="text-center flex-fill mt-3"
                 :show="totalVideos === 0 && !loading"
             >
                 No Videos Found.
@@ -119,6 +175,7 @@
 </template>
 
 <script>
+import Datepicker from 'vuejs-datepicker'
 import { mapGetters } from 'vuex'
 import Layout from '@/Shared/Layout'
 import Paginate from '@/Components/Paginate'
@@ -128,13 +185,18 @@ import ManageEditors from '@/Pages/Editor/ManageEditors'
 export default {
     name: 'EditorList',
     layout: Layout,
-    components: { ManageEditors, Paginate, VideoCard },
+    components: { Datepicker, ManageEditors, Paginate, VideoCard },
     data() {
         return {
             loading: true,
             videos: [],
             totalVideos: 0,
             showVideoModal: false,
+            applyFilters: false,
+            dateRange: {
+                start: new Date(2016, 5, 3, 0, 0, 0),
+                end: new Date(2020, 10, 1, 0, 0, 0),
+            },
             videoModal: {
                 id: 0,
                 title: null,
@@ -178,8 +240,30 @@ export default {
         ) {
             this.fetchVideos()
         }
+
+        document
+            .getElementById('fromDate')
+            .insertAdjacentHTML(
+                'beforebegin',
+                '<div class="input-group-prepend"><span class="input-group-text">From:</span></div>',
+            )
+        document
+            .getElementById('toDate')
+            .insertAdjacentHTML(
+                'beforebegin',
+                '<div class="input-group-prepend"><span class="input-group-text">To:</span></div>',
+            )
     },
     methods: {
+        showFromCalendar: function () {
+            this.$refs.fromDate.showCalendar()
+        },
+        showToCalendar: function () {
+            this.$refs.toDate.showCalendar()
+        },
+        dateFormat: function (date) {
+            return this.moment(date).format('DD/MM/YYYY')
+        },
         handleView: function (id) {
             window.axios
                 .post(this.route('videos.show', { id: id }), { uuid: this.getUser.id })
@@ -203,7 +287,20 @@ export default {
             this.loading = true
 
             window.axios
-                .post(this.route('videos.list', { page: offset }), { uuid: this.getUser.id })
+                .post(
+                    this.route('videos.list', {
+                        page: offset,
+                        _query: {
+                            'filter[created:after]': this.applyFilters
+                                ? this.moment(this.dateRange.start).format('YYYY-MM-DD')
+                                : null,
+                            'filter[created:before]': this.applyFilters
+                                ? this.moment(this.dateRange.end).format('YYYY-MM-DD')
+                                : null,
+                        },
+                    }),
+                    { uuid: this.getUser.id },
+                )
                 .then((response) => {
                     this.totalVideos = response.data.meta.total
 
@@ -244,6 +341,18 @@ export default {
         },
         toggleEditors: function () {
             this.showEditorModal = !this.showEditorModal
+        },
+        applyFilter: function () {
+            this.applyFilters = true
+            this.fetchVideos(1)
+        },
+        resetFilter: function () {
+            this.applyFilters = false
+            this.dateRange = {
+                start: new Date(2016, 5, 3, 0, 0, 0),
+                end: new Date(2020, 10, 1, 0, 0, 0),
+            }
+            this.fetchVideos(1)
         },
     },
 }
