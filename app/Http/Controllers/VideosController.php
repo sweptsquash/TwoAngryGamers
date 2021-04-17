@@ -10,6 +10,7 @@ use App\Http\Requests\UpdateVideosRequest;
 use App\Http\Resources\VideosCollectionResource;
 use App\Http\Resources\VideosResource;
 use App\Models\Videos;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -28,7 +29,36 @@ class VideosController extends Controller
      */
     public function index(ListVideosRequest $request)
     {
-        return new VideosCollectionResource(Videos::paginate());
+        try {
+            $videos = Videos::where(function ($query) use ($request) {
+                if ($request->has('filter')) {
+                    $filters = $request->get('filter');
+
+                    if (array_key_exists('created:after', $filters)) {
+                        $query->where(
+                            'created',
+                            '>=',
+                            Carbon::createFromFormat('Y-m-d', $filters['created:after'])->setTime(0, 0, 0)
+                        );
+                    }
+
+                    if (array_key_exists('created:before', $filters)) {
+                        $query->where(
+                            'created',
+                            '<=',
+                            Carbon::createFromFormat('Y-m-d', $filters['created:before'])->setTime(0, 0, 0)
+                        );
+                    }
+                }
+            });
+
+            return new VideosCollectionResource($videos->orderBy('created', 'DESC')->paginate());
+        } catch (\Exception $e) {
+            return new JsonResponse([
+                'status'    => 'error',
+                'message'   => 'No videos not found.',
+            ], Response::HTTP_NOT_FOUND);
+        }
     }
 
     /**
