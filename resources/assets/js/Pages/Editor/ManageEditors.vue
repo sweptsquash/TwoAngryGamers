@@ -335,6 +335,7 @@ export default {
                         ...this.editor,
                         valid: true,
                         id: response.data.users[0]._id,
+                        username: response.data.users[0].display_name,
                     }
                 })
                 .catch(() => {

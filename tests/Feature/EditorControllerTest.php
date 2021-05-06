@@ -10,7 +10,7 @@ class EditorControllerTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * Assert JSON Structure of Editors Collection Resource
+     * Assert JSON Structure of Editors Collection Resource.
      *
      * @return void
      */
@@ -32,7 +32,7 @@ class EditorControllerTest extends TestCase
     }
 
     /**
-     * Assert Failed to list editors collection if no uuid is passed
+     * Assert Failed to list editors collection if no uuid is passed.
      *
      * @return void
      */
@@ -45,7 +45,7 @@ class EditorControllerTest extends TestCase
     }
 
     /**
-     * Assert JSON Structure of Editors Resource
+     * Assert JSON Structure of Editors Resource.
      *
      * @return void
      */
@@ -55,7 +55,7 @@ class EditorControllerTest extends TestCase
 
         $this->post(route('editor.show', [
             'uuid' => 56964879,
-            'id' => 4928541,
+            'id'   => 4928541,
         ]))
             ->assertStatus(200)
             ->assertJsonStructure([
@@ -68,7 +68,7 @@ class EditorControllerTest extends TestCase
     }
 
     /**
-     * Assert Failed to fetch editors resource if no uuid is passed
+     * Assert Failed to fetch editors resource if no uuid is passed.
      *
      * @return void
      */
@@ -81,7 +81,7 @@ class EditorControllerTest extends TestCase
     }
 
     /**
-     * Assert Not Found when ID is invalid
+     * Assert Not Found when ID is invalid.
      *
      * @return void
      */
@@ -101,7 +101,7 @@ class EditorControllerTest extends TestCase
     }
 
     /**
-     * Assert JSON Structure of Current Editors Resource
+     * Assert JSON Structure of Current Editors Resource.
      *
      * @return void
      */
@@ -121,7 +121,7 @@ class EditorControllerTest extends TestCase
     }
 
     /**
-     * Assert Failed to fetch current editors resource if no uuid is passed
+     * Assert Failed to fetch current editors resource if no uuid is passed.
      *
      * @return void
      */
@@ -134,7 +134,7 @@ class EditorControllerTest extends TestCase
     }
 
     /**
-     * Asssert Created on new Editor
+     * Asssert Created on new Editor.
      *
      * @return void
      */
@@ -158,9 +158,9 @@ class EditorControllerTest extends TestCase
                     'id'        => $editor['id'],
                     'name'      => $editor['name'],
                     'role'      => [
-                        'id'            =>  $editor['role_id'],
-                        'name'          =>  'Editor',
-                        'permissions'   =>  [
+                        'id'            => $editor['role_id'],
+                        'name'          => 'Editor',
+                        'permissions'   => [
                             'List Videos',
                             'Can Download',
                         ],
@@ -171,7 +171,7 @@ class EditorControllerTest extends TestCase
     }
 
     /**
-     * Assert Success on Editor Update
+     * Assert Success on Editor Update.
      *
      * @return void
      */
@@ -204,7 +204,7 @@ class EditorControllerTest extends TestCase
     }
 
     /**
-     * Assert Success on Editor Deletion
+     * Assert Success on Editor Deletion.
      *
      * @return void
      */
@@ -225,7 +225,7 @@ class EditorControllerTest extends TestCase
     }
 
     /**
-     * Assert List Roles
+     * Assert List Roles.
      *
      * @return void
      */

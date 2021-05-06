@@ -30,18 +30,18 @@ class ProcessVideos extends Command
      */
     public function handle()
     {
-        $mediaDir = base_path() . '/media/videos/';
+        $mediaDir     = base_path() . '/media/videos/';
         $thumbnailDir = base_path() . '/public_html/images/thumbnails/';
-        $videoFiles = scandir($mediaDir);
-        $videoFiles = array_slice($videoFiles, 2, count($videoFiles));
+        $videoFiles   = scandir($mediaDir);
+        $videoFiles   = array_slice($videoFiles, 2, count($videoFiles));
 
         if (! empty($videoFiles)) {
             foreach ($videoFiles as $video) {
                 preg_match_all("^\[(.*?)\]^", $video, $date, PREG_PATTERN_ORDER);
 
                 $authorOriginal = preg_split('/(?<match>by\s)/', $video, -1, PREG_SPLIT_NO_EMPTY);
-                $author = explode('-', $authorOriginal[1]);
-                $author = $author[0];
+                $author         = explode('-', $authorOriginal[1]);
+                $author         = $author[0];
 
                 $title = ltrim(str_replace([$date[0][0], 'by ' . $authorOriginal[1], '.mp4'], ['', '', ''], $video));
 
@@ -57,16 +57,16 @@ class ProcessVideos extends Command
                     $thumbnailName = Str::slug($title . $dateTime->toDateTimeString() . '-thumbnail') . '.jpg';
 
                     if (! file_exists($thumbnailDir . $thumbnailName)) {
-                        $ffmpeg = \FFMpeg\FFMpeg::create();
+                        $ffmpeg    = \FFMpeg\FFMpeg::create();
                         $videoFile = $ffmpeg->open($mediaDir . $video);
                         $thumbnail = $videoFile->frame(\FFMpeg\Coordinate\TimeCode::fromSeconds(2));
                         $thumbnail->save($thumbnailDir . $thumbnailName);
                     }
 
-                    $ffprobe = \FFMpeg\FFProbe::create();
+                    $ffprobe  = \FFMpeg\FFProbe::create();
                     $duration = number_format($ffprobe->format($mediaDir . $video)->get('duration'));
 
-                    Videos::factory()->create([
+                    Videos::create([
                         'title'     => $title,
                         'author'    => $author,
                         'filename'  => $video,

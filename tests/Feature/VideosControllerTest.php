@@ -14,38 +14,43 @@ class VideosControllerTest extends TestCase
     {
         $videos = [
             [
-                'title' => 'The Wizard ',
-                'author' => 'EndersDane',
-                'filename' => '[2016_06_03 15_35_55] The Wizard by EndersDane-DarkInventiveOstrichVoteYea.mp4',
-                'created' => '2016-06-03 15:35:55',
+                'title'     => 'The Wizard ',
+                'author'    => 'EndersDane',
+                'filename'  => '[2016_06_03 15_35_55] The Wizard by EndersDane-DarkInventiveOstrichVoteYea.mp4',
+                'created'   => '2016-06-03 15:35:55',
+                'duration'  => 30,
                 'thumbnail' => 'the-wizard-2016-06-03-153555-thumbnail.jpg',
             ],
             [
-                'title' => 'I BLESS THE EGG DOWN IN RUSTICA ',
-                'author' => 'EndersDane',
-                'filename' => '[2016_06_06 15_37_09] I BLESS THE EGG DOWN IN RUSTICA by EndersDane-TawdryManlyClipsdadSmoocherZ.mp4',
-                'created' => '2016-06-06 15:37:09',
+                'title'     => 'I BLESS THE EGG DOWN IN RUSTICA ',
+                'author'    => 'EndersDane',
+                'filename'  => '[2016_06_06 15_37_09] I BLESS THE EGG DOWN IN RUSTICA by EndersDane-TawdryManlyClipsdadSmoocherZ.mp4',
+                'created'   => '2016-06-06 15:37:09',
+                'duration'  => 30,
                 'thumbnail' => 'i-bless-the-egg-down-in-rustica-2016-06-06-153709-thumbnail.jpg',
             ],
             [
-                'title' => 'INDIE HORROR QUEST Part XVICVI - Full badger ',
-                'author' => 'Daruth505',
-                'filename' => '[2016_06_09 01_30_48] INDIE HORROR QUEST Part XVICVI - Full badger by Daruth505-SecretiveSteamyClipzPeanutButterJellyTime.mp4',
-                'created' => '2016-06-09 01:30:48',
+                'title'     => 'INDIE HORROR QUEST Part XVICVI - Full badger ',
+                'author'    => 'Daruth505',
+                'filename'  => '[2016_06_09 01_30_48] INDIE HORROR QUEST Part XVICVI - Full badger by Daruth505-SecretiveSteamyClipzPeanutButterJellyTime.mp4',
+                'created'   => '2016-06-09 01:30:48',
+                'duration'  => 30,
                 'thumbnail' => 'indie-horror-quest-part-xvicvi-full-badger-2016-06-09-013048-thumbnail.jpg',
             ],
             [
-                'title' => 'Dead By Egglight ',
-                'author' => 'Stabbies',
-                'filename' => '[2016_06_17 13_51_57] Dead By Egglight by Stabbies-BoringFineMetalBCouch.mp4',
-                'created' => '2016-06-17 13:51:57',
+                'title'     => 'Dead By Egglight ',
+                'author'    => 'Stabbies',
+                'filename'  => '[2016_06_17 13_51_57] Dead By Egglight by Stabbies-BoringFineMetalBCouch.mp4',
+                'created'   => '2016-06-17 13:51:57',
+                'duration'  => 30,
                 'thumbnail' => 'dead-by-egglight-2016-06-17-135157-thumbnail.jpg',
             ],
         ];
 
-        foreach ($videos as $video) {
-            Videos::factory()->create($video);
-        }
+        collect($videos)
+            ->each(function ($video) {
+                Videos::create($video);
+            });
     }
 
     public function mockVideoFile()
@@ -58,7 +63,7 @@ class VideosControllerTest extends TestCase
     }
 
     /**
-     * Assert JSON Structure of Videos Collection Resource
+     * Assert JSON Structure of Videos Collection Resource.
      *
      * @return void
      */
@@ -84,7 +89,7 @@ class VideosControllerTest extends TestCase
     }
 
     /**
-     * Assert JSON Structure of Filtered Videos Collection Resource
+     * Assert JSON Structure of Filtered Videos Collection Resource.
      *
      * @return void
      */
@@ -111,7 +116,7 @@ class VideosControllerTest extends TestCase
     }
 
     /**
-     * Assert Failed to list video collection if no uuid is passed
+     * Assert Failed to list video collection if no uuid is passed.
      *
      * @return void
      */
@@ -125,7 +130,7 @@ class VideosControllerTest extends TestCase
     }
 
     /**
-     * Assert JSON Structure of Videos Resource
+     * Assert JSON Structure of Videos Resource.
      *
      * @return void
      */
@@ -136,7 +141,7 @@ class VideosControllerTest extends TestCase
 
         $this->post(route('videos.show', [
             'uuid' => 56964879,
-            'id' => 1,
+            'id'   => 1,
         ]))
             ->assertStatus(200)
             ->assertJsonStructure([
@@ -152,7 +157,7 @@ class VideosControllerTest extends TestCase
     }
 
     /**
-     * Assert Failed to list video if no uuid is passed
+     * Assert Failed to list video if no uuid is passed.
      *
      * @return void
      */
@@ -166,7 +171,7 @@ class VideosControllerTest extends TestCase
     }
 
     /**
-     * Assert Success on Video Deletion
+     * Assert Success on Video Deletion.
      *
      * @return void
      */

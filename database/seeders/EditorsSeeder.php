@@ -27,8 +27,14 @@ class EditorsSeeder extends Seeder
             ],
         ];
 
-        foreach ($editors as $editor) {
-            Editors::factory()->create($editor);
-        }
+        collect($editors)
+            ->each(function ($editor) {
+                Editors::updateOrCreate([
+                    'id'        => $editor['id'],
+                ], [
+                    'name'      => $editor['name'],
+                    'role_id'   => $editor['role_id'],
+                ]);
+            });
     }
 }

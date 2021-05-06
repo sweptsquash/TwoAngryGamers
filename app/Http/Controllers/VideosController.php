@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\DeleteVideoRequest;
 use App\Http\Requests\FetchVideosRequest;
 use App\Http\Requests\ListVideosRequest;
@@ -21,7 +20,7 @@ use ZipArchive;
 class VideosController extends Controller
 {
     /**
-     * List All Videos
+     * List All Videos.
      *
      * @param Request $request
      *
@@ -62,10 +61,7 @@ class VideosController extends Controller
     }
 
     /**
-     * Fetch A Specific Video
-     *
-     * @param FetchVideosRequest $request
-     * @param string $id
+     * Fetch A Specific Video.
      *
      * @return VideoResource|JsonResponse
      */
@@ -84,9 +80,7 @@ class VideosController extends Controller
     }
 
     /**
-     * Update A Specific Videos Details
-     *
-     * @param UpdateVideosRequest $request
+     * Update A Specific Videos Details.
      *
      * @return void
      */
@@ -110,9 +104,7 @@ class VideosController extends Controller
     }
 
     /**
-     * Delete A Specific Video from the Database and Filesystem
-     *
-     * @param DeleteVideoRequest $request
+     * Delete A Specific Video from the Database and Filesystem.
      *
      * @return void
      */
@@ -139,9 +131,7 @@ class VideosController extends Controller
     }
 
     /**
-     * Fetch Thumbnail
-     *
-     * @param string $id
+     * Fetch Thumbnail.
      *
      * @return Response|JsonResponse
      */
@@ -164,9 +154,7 @@ class VideosController extends Controller
     }
 
     /**
-     * Download Video
-     *
-     * @param string $id
+     * Download Video.
      *
      * @return Response|JsonResponse
      */
@@ -190,7 +178,7 @@ class VideosController extends Controller
     }
 
     /**
-     * Compress and Download Collection of Videos
+     * Compress and Download Collection of Videos.
      *
      * @return Response|JsonResponse
      */
@@ -204,13 +192,13 @@ class VideosController extends Controller
 
                 if ($videos->isNotEmpty()) {
                     $videoFiles = [];
-                    $zipFile = 'TAG-Collection-' . date('Y-m-d-H-i-s') . '.zip';
+                    $zipFile    = 'TAG-Collection-' . date('Y-m-d-H-i-s') . '.zip';
 
                     foreach ($videos as $video) {
                         $videoFiles[] = $video->filename;
                     }
 
-                    $zip = new ZipArchive;
+                    $zip = new ZipArchive();
 
                     $zip->open(
                         base_path() . '/media/tmp/' . $zipFile,
@@ -243,9 +231,7 @@ class VideosController extends Controller
     }
 
     /**
-     * Stream Video File
-     *
-     * @param string $id
+     * Stream Video File.
      *
      * @return VideoStreamer|JsonResponse
      */

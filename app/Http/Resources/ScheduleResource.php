@@ -12,14 +12,15 @@ class ScheduleResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public function toArray($request)
     {
-        $now = Carbon::now();
+        $now       = Carbon::now();
         $dayOfWeek = $this->start->format('l');
-        $time = explode(':', $this->start->format('H:i:s'));
+        $time      = explode(':', $this->start->format('H:i:s'));
 
         $start = new Carbon(
             (new DateTime())

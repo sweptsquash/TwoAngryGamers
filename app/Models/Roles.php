@@ -2,14 +2,10 @@
 
 namespace App\Models;
 
-use Database\Factories\RolesFactory;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Roles extends Model
 {
-    use HasFactory;
-
     /**
      * The table associated with the model.
      *
@@ -40,11 +36,6 @@ class Roles extends Model
      * @var array
      */
     protected $casts = [];
-
-    protected static function newFactory()
-    {
-        return RolesFactory::new();
-    }
 
     public function editors()
     {

@@ -3,7 +3,6 @@
 FROM composer:latest as build
 
 FROM php:8.0-apache as base
-ARG SSH_KEY
 
 RUN apt-get update && apt-get install -y \
     g++ \
@@ -39,10 +38,6 @@ RUN apt-get update && apt-get install -y \
     libjpeg62-turbo-dev
 RUN apt-get clean
 
-RUN mkdir -p -m 0600 /root/.ssh && ssh-keyscan -t rsa github.com > /root/.ssh/known_hosts
-RUN echo "${SSH_KEY}" > /root/.ssh/id_rsa
-RUN chmod 600 ~/.ssh/id_rsa
-
 RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
 RUN wget -P /etc/ssl/certs https://curl.haxx.se/ca/cacert.pem
 
@@ -58,15 +53,6 @@ RUN docker-php-ext-configure gd \
 
 RUN docker-php-ext-install gd
 RUN docker-php-ext-install pdo_mysql zip exif pcntl
-
-RUN --mount=type=ssh,id=github git clone https://github.com/Imagick/imagick /tmp/imagick
-RUN cd /tmp/imagick && \
-    phpize && \
-    ./configure && \
-    make && \
-    make install && \
-    echo "extension=imagick.so" > /usr/local/etc/php/conf.d/ext-imagick.ini && \
-    cd /tmp && rm -rf ./imagick
 
 RUN export COMPOSER_ALLOW_SUPERUSER=1
 COPY --from=composer /usr/bin/composer /usr/bin/composer

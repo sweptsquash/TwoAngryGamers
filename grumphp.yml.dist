@@ -16,5 +16,5 @@ grumphp:
             metadata:
                 label: prettier
         phpcsfixer:
-            config: .php_cs.dist
+            config: .php-cs-fixer.dist.php
             using_cache: false

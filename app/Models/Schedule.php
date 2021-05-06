@@ -2,14 +2,10 @@
 
 namespace App\Models;
 
-use Database\Factories\ScheduleFactory;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Schedule extends Model
 {
-    use HasFactory;
-
     /**
      * The table associated with the model.
      *
@@ -49,9 +45,4 @@ class Schedule extends Model
         'duration'  => 'integer',
         'special'   => 'boolean',
     ];
-
-    protected static function newFactory()
-    {
-        return ScheduleFactory::new();
-    }
 }

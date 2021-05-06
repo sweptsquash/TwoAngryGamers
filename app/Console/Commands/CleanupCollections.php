@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use Carbon\Carbon;
 use Illuminate\Console\Command;
-use Str;
 
 class CleanupCollections extends Command
 {
@@ -30,13 +29,13 @@ class CleanupCollections extends Command
     public function handle()
     {
         $mediaDir = base_path() . '/media/tmp/';
-        $files = scandir($mediaDir);
-        $files = array_slice($files, 2, count($files));
+        $files    = scandir($mediaDir);
+        $files    = array_slice($files, 2, count($files));
 
         foreach ($files as $file) {
-            $created = filemtime($mediaDir . $file);
+            $created       = filemtime($mediaDir . $file);
             $createdExpire = Carbon::createFromTimestamp($created)->addHours(24);
-            $now = Carbon::now();
+            $now           = Carbon::now();
 
             if ($now->greaterThan($createdExpire)) {
                 unlink($mediaDir . $file);

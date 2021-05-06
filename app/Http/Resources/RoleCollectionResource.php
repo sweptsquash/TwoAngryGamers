@@ -7,7 +7,7 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 class RoleCollectionResource extends ResourceCollection
 {
     /**
-     * The resoruce that this resource collects
+     * The resoruce that this resource collects.
      *
      * @var string
      */
@@ -16,7 +16,8 @@ class RoleCollectionResource extends ResourceCollection
     /**
      * Transform the resource collection into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public function toArray($request)

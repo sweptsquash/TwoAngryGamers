@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateEditorRequest;
 use App\Http\Requests\DeleteEditorRequest;
 use App\Http\Requests\FetchEditorRequest;
@@ -22,7 +21,7 @@ use Inertia\Inertia;
 class EditorController extends Controller
 {
     /**
-     * List All Editors
+     * List All Editors.
      *
      * @param Request $request
      *
@@ -34,10 +33,9 @@ class EditorController extends Controller
     }
 
     /**
-     * Fetch A Specific Editor
+     * Fetch A Specific Editor.
      *
      * @param Request $request
-     * @param string $id
      *
      * @return EditorResource|JsonResponse
      */
@@ -56,7 +54,7 @@ class EditorController extends Controller
     }
 
     /**
-     * Fetch Current Editors Information
+     * Fetch Current Editors Information.
      *
      * @param Request $request
      *
@@ -72,15 +70,13 @@ class EditorController extends Controller
     }
 
     /**
-     * Create A New Editor
-     *
-     * @param CreateEditorRequest $request
+     * Create A New Editor.
      *
      * @return EditorResource
      */
     public function store(CreateEditorRequest $request)
     {
-        $editor = Editors::factory()->create([
+        $editor = Editors::create([
             'id'        => $request->input('id'),
             'name'      => $request->input('name'),
             'role_id'   => $request->input('role_id'),
@@ -90,10 +86,9 @@ class EditorController extends Controller
     }
 
     /**
-     * Update An Existing Editor
+     * Update An Existing Editor.
      *
      * @param string $id
-     * @param UpdateEditorRequest $request
      *
      * @return EditorResource|JsonResponse
      */
@@ -117,10 +112,9 @@ class EditorController extends Controller
     }
 
     /**
-     * Delete An Existing Editor
+     * Delete An Existing Editor.
      *
      * @param string $id
-     * @param DeleteEditorRequest $request
      *
      * @return JsonResponse
      */
@@ -143,9 +137,7 @@ class EditorController extends Controller
     }
 
     /**
-     * List All Editor Roles
-     *
-     * @param ListEditorRolesRequest $request
+     * List All Editor Roles.
      *
      * @return RoleCollectionResource
      */
@@ -155,7 +147,7 @@ class EditorController extends Controller
     }
 
     /**
-     * Deny Access to Editor Section
+     * Deny Access to Editor Section.
      *
      * @return \Inertia\Response
      */
@@ -165,7 +157,7 @@ class EditorController extends Controller
     }
 
     /**
-     * List Videos
+     * List Videos.
      *
      * @return \Inertia\Response
      */

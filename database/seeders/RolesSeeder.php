@@ -29,8 +29,13 @@ class RolesSeeder extends Seeder
             ],
         ];
 
-        foreach ($roles as $role) {
-            Roles::factory()->create($role);
-        }
+        collect($roles)
+            ->each(function ($role) {
+                Roles::updateOrCreate([
+                    'name'          => $role['name'],
+                ], [
+                    'permissions'   => $role['permissions'],
+                ]);
+            });
     }
 }

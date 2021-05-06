@@ -9,14 +9,15 @@ class VideosResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public function toArray($request)
     {
         $hours = floor($this->duration / 3600);
-        $mins = floor(($this->duration - ($hours * 3600)) / 60);
-        $secs = floor(($this->duration - ($hours * 3600)) - ($mins * 60));
+        $mins  = floor(($this->duration - ($hours * 3600)) / 60);
+        $secs  = floor(($this->duration - ($hours * 3600)) - ($mins * 60));
 
         if ($hours < 10) {
             $hours = '0' . $hours;

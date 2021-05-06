@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Schedule;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Arr;
 
 class ScheduleSeeder extends Seeder
 {
@@ -98,8 +99,11 @@ class ScheduleSeeder extends Seeder
             ],
         ];
 
-        foreach ($schedule as $event) {
-            Schedule::factory()->create($event);
-        }
+        collect($schedule)
+            ->each(function ($event) {
+                Schedule::updateOrCreate([
+                    'name'  => $event['name'],
+                ], Arr::except($event, ['name']));
+            });
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Http\Resources\ScheduleCollectionResource;
 use App\Models\Schedule;
 use Carbon\Carbon;
@@ -14,7 +13,7 @@ use Google_Service_YouTube;
 class ScheduleController extends Controller
 {
     /**
-     * Schedule List
+     * Schedule List.
      *
      * @return ScheduleCollectionResource
      */
@@ -24,20 +23,20 @@ class ScheduleController extends Controller
     }
 
     /**
-     * Next Scheduled Stream
+     * Next Scheduled Stream.
      *
      * @return json
      */
     public function scheduleNext()
     {
-        $schedule = Schedule::all();
+        $schedule   = Schedule::all();
         $nextStream = $streams = [];
 
         $now = Carbon::now();
 
         foreach ($schedule as $event) {
             $dayOfWeek = $event->start->format('l');
-            $time = explode(':', $event->start->format('H:i:s'));
+            $time      = explode(':', $event->start->format('H:i:s'));
 
             $start = new Carbon(
                 (new DateTime())
