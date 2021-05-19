@@ -255,21 +255,6 @@ export default {
     metaInfo() {
         return {
             title: 'Sub Perks',
-            link: [{ rel: 'canonical', href: 'https://www.twoangrygamers.tv/subperks' }],
-            meta: [
-                {
-                    property: 'og:title',
-                    content: 'Sub Perks | Two Angry Gamers',
-                },
-                {
-                    name: 'twitter:title',
-                    content: 'Sub Perks | Two Angry Gamers',
-                },
-                {
-                    property: 'og:url',
-                    content: 'https://www.twoangrygamers.tv/subperks',
-                },
-            ],
         }
     },
     data() {

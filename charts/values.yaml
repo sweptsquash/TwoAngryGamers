@@ -5,7 +5,7 @@ repositoryName: TwoAngryGamers
 image:
   repository: twoangrygamers
   pullPolicy: IfNotPresent
-  registry: senshudo
+  registry: twoangrygamers
 projectPath: ""
 xdebugEnabled: false
 
@@ -29,14 +29,8 @@ ingress:
     ingress.kubernetes.io/enable-cors: "true"
     kubernetes.io/ingress.class: traefik
   hosts:
-    - name: twoangrygamers
-      host: twoangrygamers.test
-      paths: ["/"]
     - name: twoangrygamerswww
       host: www.twoangrygamers.test
-      paths: ["/"]
-    - name: twoangrygamerscontrol
-      host: control.twoangrygamers.test
       paths: ["/"]
 
 resources: {}

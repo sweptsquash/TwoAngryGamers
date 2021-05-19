@@ -185,6 +185,11 @@ import ManageEditors from '@/Pages/Editor/ManageEditors'
 export default {
     name: 'EditorList',
     layout: Layout,
+    metaInfo() {
+        return {
+            title: 'Editor',
+        }
+    },
     components: { Datepicker, ManageEditors, Paginate, VideoCard },
     data() {
         return {

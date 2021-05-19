@@ -154,21 +154,6 @@ export default {
     metaInfo() {
         return {
             title: 'About',
-            link: [{ rel: 'canonical', href: 'https://www.twoangrygamers.tv/about' }],
-            meta: [
-                {
-                    property: 'og:title',
-                    content: 'About | Two Angry Gamers',
-                },
-                {
-                    name: 'twitter:title',
-                    content: 'About | Two Angry Gamers',
-                },
-                {
-                    property: 'og:url',
-                    content: 'https://www.twoangrygamers.tv/about',
-                },
-            ],
         }
     },
     data() {

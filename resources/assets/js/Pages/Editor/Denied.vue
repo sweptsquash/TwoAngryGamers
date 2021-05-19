@@ -17,6 +17,11 @@ import Layout from '@/Shared/Layout'
 export default {
     name: 'Denied',
     layout: Layout,
+    metaInfo() {
+        return {
+            title: 'Access Denied',
+        }
+    },
     computed: {
         ...mapGetters(['isAuthorized', 'getUser']),
     },

@@ -153,7 +153,8 @@ class EditorController extends Controller
      */
     public function editorDenied()
     {
-        return Inertia::render('Editor/Denied');
+        return Inertia::render('Editor/Denied')
+            ->withViewData(['meta' => ['title' => 'Access Denied']]);
     }
 
     /**
@@ -163,6 +164,7 @@ class EditorController extends Controller
      */
     public function editorIndex()
     {
-        return Inertia::render('Editor/List');
+        return Inertia::render('Editor/List')
+            ->withViewData(['meta' => ['title' => 'Editor']]);
     }
 }

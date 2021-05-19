@@ -15,9 +15,9 @@ spec:
         app: "{{ .Values.image.repository }}"
     spec:
       volumes:
-        - name: apache-config-volume
+        - name: nginx-config-volume
           configMap:
-            name: {{ .Values.image.repository }}-apache-config
+            name: {{ .Values.image.repository }}-nginx-config
         - name: local-mount
           hostPath:
             path: {{ .Values.projectPath }}
@@ -26,8 +26,16 @@ spec:
           image: "twoangrygamers:latest"
           imagePullPolicy: {{ .Values.image.pullPolicy | quote }}
           volumeMounts:
-            - name: apache-config-volume
-              mountPath: /etc/apache2/apache2.conf
-              subPath: apache2.conf
             - name: local-mount
               mountPath: /var/www/twoangrygamers.test
+
+        - name: nginx
+          image: nginx:1.19-alpine
+          volumeMounts:
+            - name: nginx-config-volume
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
+            - name: local-mount
+              mountPath: /var/www/twoangrygamers.test
+
+

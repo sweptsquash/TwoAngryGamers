@@ -13,11 +13,13 @@ class HomeController extends Controller
 
     public function about()
     {
-        return Inertia::render('About');
+        return Inertia::render('About')
+            ->withViewData(['meta' => ['title' => 'About Us']]);
     }
 
     public function subperks()
     {
-        return Inertia::render('SubPerks');
+        return Inertia::render('SubPerks')
+            ->withViewData(['meta' => ['title' => 'Sub Perks']]);
     }
 }
