@@ -82,7 +82,7 @@
         "bootstrap": "^4.5.3",
         "bootstrap-vue": "^2.21.2",
         "es6-promise": "^4.2.8",
-        "moment": "^2.29.1",
+        "moment": "^2.29.2",
         "nuxt": "^2.15.8",
         "portal-vue": "^2.1.7",
         "vuejs-datepicker": "^1.6.2"
